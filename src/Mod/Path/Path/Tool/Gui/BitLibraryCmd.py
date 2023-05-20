@@ -34,33 +34,6 @@ else:
 translate = FreeCAD.Qt.translate
 
 
-class CommandToolBitSelectorOpen:
-    """
-    Command to toggle the ToolBitSelector Dock
-    """
-
-    def __init__(self):
-        pass
-
-    def GetResources(self):
-        return {
-            "Pixmap": "Path_ToolTable",
-            "MenuText": QT_TRANSLATE_NOOP("Path_ToolBitDock", "ToolBit Dock"),
-            "ToolTip": QT_TRANSLATE_NOOP("Path_ToolBitDock", "Toggle the Toolbit Dock"),
-            "Accel": "P, T",
-            "CmdType": "ForEdit",
-        }
-
-    def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
-
-    def Activated(self):
-        import Path.Tool.Gui.BitLibrary as PathToolBitLibraryGui
-
-        dock = PathToolBitLibraryGui.ToolBitSelector()
-        dock.open()
-
-
 class CommandToolBitLibraryOpen:
     """
     Command to open ToolBitLibrary editor.
@@ -73,11 +46,12 @@ class CommandToolBitLibraryOpen:
         return {
             "Pixmap": "Path_ToolTable",
             "MenuText": QT_TRANSLATE_NOOP(
-                "Path_ToolBitLibraryOpen", "ToolBit Library editor"
+                "Path_ToolBitLibraryOpen", "ToolBit Library"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_ToolBitLibraryOpen", "Open an editor to manage ToolBit libraries"
+                "Path_ToolBitLibraryOpen", "Open the ToolBit library"
             ),
+            "Accel": "P, T",
             "CmdType": "ForEdit",
         }
 
@@ -94,9 +68,8 @@ class CommandToolBitLibraryOpen:
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand("Path_ToolBitLibraryOpen", CommandToolBitLibraryOpen())
-    FreeCADGui.addCommand("Path_ToolBitDock", CommandToolBitSelectorOpen())
 
-BarList = ["Path_ToolBitDock"]
-MenuList = ["Path_ToolBitLibraryOpen", "Path_ToolBitDock"]
+BarList = ["Path_ToolBitLibraryOpen"]
+MenuList = ["Path_ToolBitLibraryOpen"]
 
 FreeCAD.Console.PrintLog("Loading PathToolBitLibraryCmd... done\n")

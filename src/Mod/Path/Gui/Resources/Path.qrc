@@ -63,6 +63,7 @@
         <file>icons/Path_Stop.svg</file>
         <file>icons/Path_ThreadMilling.svg</file>
         <file>icons/Path_ToolBit.svg</file>
+        <file>icons/Path_ToolEdit.svg</file>
         <file>icons/Path_ToolChange.svg</file>
         <file>icons/Path_ToolController.svg</file>
         <file>icons/Path_ToolDuplicate.svg</file>
@@ -128,7 +129,6 @@
         <file>panels/SetupOp.ui</file>
         <file>panels/ToolBitEditor.ui</file>
         <file>panels/ToolBitLibraryEdit.ui</file>
-        <file>panels/ToolBitSelector.ui</file>
         <file>panels/TaskPathCamoticsSim.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
         <file>panels/ZCorrectEdit.ui</file>

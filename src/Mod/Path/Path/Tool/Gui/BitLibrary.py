@@ -273,28 +273,88 @@ class ModelFactory(object):
                 FreeCAD.Console.PrintError(msg)
 
     def _toolAdd(self, nr, tool, path):
-
-        strShape = os.path.splitext(os.path.basename(tool["shape"]))[0]
-        # strDiam = tool['parameter']['Diameter']
-        tooltip = "{}".format(strShape)
-
+        # Tool number column.
         toolNr = PySide.QtGui.QStandardItem()
         toolNr.setData(nr, PySide.QtCore.Qt.EditRole)
-        toolNr.setToolTip(tool["shape"])
         toolNr.setData(path, _PathRole)
         toolNr.setData(UUID.uuid4(), _UuidRole)
-        toolNr.setToolTip(tooltip)
+        toolNr.setToolTip(path)
 
+        # Tool name column.
         toolName = PySide.QtGui.QStandardItem()
         toolName.setData(tool["name"], PySide.QtCore.Qt.EditRole)
         toolName.setEditable(False)
-        toolName.setToolTip(tooltip)
 
+        # The value for the shape column is taken from the name of the shape file.
+        strShape = os.path.splitext(os.path.basename(tool["shape"]))[0]
         toolShape = PySide.QtGui.QStandardItem()
+        toolShape.setToolTip(tool["shape"])
         toolShape.setData(strShape, PySide.QtCore.Qt.EditRole)
         toolShape.setEditable(False)
 
-        return [toolNr, toolName, toolShape]
+        # Everything below comes from the "parameter" branch of the JSON file.
+        # I will consider all these "optional" for the sake of building this list,
+        # i.e. if any of them cannot be read they will just be left empty.
+        param = tool['parameter']
+
+        # Tool diameter.
+        toolDiameter = PySide.QtGui.QStandardItem()
+        toolDiameter.setEditable(False)
+        try:
+            diameterStr = str(param.get('Diameter'))
+        except ValueError:
+            pass
+        else:
+            toolDiameter.setData(diameterStr, PySide.QtCore.Qt.EditRole)
+
+        # Cutting edge length.
+        cuttingEdge = PySide.QtGui.QStandardItem()
+        cuttingEdge.setEditable(False)
+        try:
+            cuttingEdgeStr = str(param.get('CuttingEdgeHeight'))
+        except ValueError:
+            pass
+        else:
+            cuttingEdge.setData(cuttingEdgeStr, PySide.QtCore.Qt.EditRole)
+
+        # Shank diameter.
+        shankDiameter = PySide.QtGui.QStandardItem()
+        shankDiameter.setEditable(False)
+        try:
+            shankDiameterStr = str(param.get('ShankDiameter'))
+        except ValueError:
+            pass
+        else:
+            shankDiameter.setData(shankDiameterStr, PySide.QtCore.Qt.EditRole)
+
+        # Tool length.
+        toolLength = PySide.QtGui.QStandardItem()
+        toolLength.setEditable(False)
+        try:
+            lengthStr = str(param.get('Length'))
+        except ValueError:
+            pass
+        else:
+            toolLength.setData(lengthStr, PySide.QtCore.Qt.EditRole)
+
+        # Number of flutes.
+        nFlutes = PySide.QtGui.QStandardItem()
+        nFlutes.setEditable(False)
+        try:
+            flutesStr = str(int(param.get('Flutes')))
+        except ValueError:
+            pass
+        else:
+            nFlutes.setData(flutesStr, PySide.QtCore.Qt.EditRole)
+
+        return [toolNr,
+                toolName,
+                toolShape,
+                toolDiameter,
+                cuttingEdge,
+                shankDiameter,
+                toolLength,
+                nFlutes]
 
     def newTool(self, datamodel, path):
         """
@@ -355,134 +415,6 @@ class ModelFactory(object):
 
         Path.Log.debug("model rows: {}".format(model.rowCount()))
         return model
-
-
-class ToolBitSelector(object):
-    """Controller for displaying a library and creating ToolControllers"""
-
-    def __init__(self):
-        checkWorkingDir()
-        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitSelector.ui")
-        self.factory = ModelFactory()
-        self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
-        self.setupUI()
-        self.title = self.form.windowTitle()
-
-    def columnNames(self):
-        return ["#", "Tool"]
-
-    def currentLibrary(self, shortNameOnly):
-        libfile = Path.Preferences.lastFileToolLibrary()
-        if libfile is None or libfile == "":
-            return ""
-        elif shortNameOnly:
-            return os.path.splitext(os.path.basename(libfile))[0]
-        return libfile
-
-    def loadData(self):
-        Path.Log.track()
-        self.toolModel.clear()
-        self.toolModel.setHorizontalHeaderLabels(self.columnNames())
-        self.form.lblLibrary.setText(self.currentLibrary(True))
-        self.form.lblLibrary.setToolTip(self.currentLibrary(False))
-        self.factory.libraryOpen(self.toolModel)
-        self.toolModel.takeColumn(3)
-        self.toolModel.takeColumn(2)
-
-    def setupUI(self):
-        Path.Log.track()
-        self.loadData()
-        self.form.tools.setModel(self.toolModel)
-        self.form.tools.selectionModel().selectionChanged.connect(self.enableButtons)
-        self.form.tools.doubleClicked.connect(
-            partial(self.selectedOrAllToolControllers)
-        )
-        self.form.libraryEditorOpen.clicked.connect(self.libraryEditorOpen)
-        self.form.addToolController.clicked.connect(self.selectedOrAllToolControllers)
-
-    def enableButtons(self):
-        selected = len(self.form.tools.selectedIndexes()) >= 1
-        if selected:
-            jobs = (
-                len([1 for j in FreeCAD.ActiveDocument.Objects if j.Name[:3] == "Job"])
-                >= 1
-            )
-        self.form.addToolController.setEnabled(selected and jobs)
-
-    def libraryEditorOpen(self):
-        library = ToolBitLibrary()
-        library.open()
-        self.loadData()
-
-    def selectedOrAllTools(self):
-        """
-        Iterate the selection and add individual tools
-        If a group is selected, iterate and add children
-        """
-
-        itemsToProcess = []
-        for index in self.form.tools.selectedIndexes():
-            item = index.model().itemFromIndex(index)
-
-            if item.hasChildren():
-                for i in range(item.rowCount() - 1):
-                    if item.child(i).column() == 0:
-                        itemsToProcess.append(item.child(i))
-
-            elif item.column() == 0:
-                itemsToProcess.append(item)
-
-        tools = []
-        for item in itemsToProcess:
-            toolNr = int(item.data(PySide.QtCore.Qt.EditRole))
-            toolPath = item.data(_PathRole)
-            tools.append((toolNr, PathToolBit.Factory.CreateFrom(toolPath)))
-        return tools
-
-    def selectedOrAllToolControllers(self, index=None):
-        """
-        if no jobs, don't do anything, otherwise all TCs for all
-        selected toolbits
-        """
-        jobs = PathUtilsGui.PathUtils.GetJobs()
-        if len(jobs) == 0:
-            return
-        elif len(jobs) == 1:
-            job = jobs[0]
-        else:
-            userinput = PathUtilsGui.PathUtilsUserInput()
-            job = userinput.chooseJob(jobs)
-
-        if job is None:  # user may have canceled
-            return
-
-        tools = self.selectedOrAllTools()
-
-        for tool in tools:
-            tc = PathToolControllerGui.Create(
-                "TC: {}".format(tool[1].Label), tool[1], tool[0]
-            )
-            job.Proxy.addToolController(tc)
-            FreeCAD.ActiveDocument.recompute()
-
-    def open(self, path=None):
-        """load library stored in path and bring up ui"""
-        docs = FreeCADGui.getMainWindow().findChildren(PySide.QtGui.QDockWidget)
-        for doc in docs:
-            if doc.objectName() == "ToolSelector":
-                if doc.isVisible():
-                    doc.deleteLater()
-                    return
-                else:
-                    doc.setVisible(True)
-                    return
-
-        mw = FreeCADGui.getMainWindow()
-        mw.addDockWidget(
-            PySide.QtCore.Qt.RightDockWidgetArea,
-            self.form,
-            PySide.QtCore.Qt.Orientation.Vertical,
-        )
 
 
 class ToolBitLibrary(object):
@@ -559,8 +491,10 @@ class ToolBitLibrary(object):
             self.toolModel.removeRows(row, 1)
 
     def toolSelect(self, selected, deselected):
-        sel = len(self.toolTableView.selectedIndexes()) > 0
-        self.form.toolDelete.setEnabled(sel)
+        sel = len(self.toolTableView.selectionModel().selectedRows())
+        self.form.toolDelete.setEnabled(sel > 0)
+        self.form.toolEdit.setEnabled(sel == 1)
+        self.form.addToolController.setEnabled(sel > 0)
 
     def tableSelected(self, index):
         """loads the tools for the selected tool table"""
@@ -612,6 +546,7 @@ class ToolBitLibrary(object):
         self.form.toolCreate.setEnabled(False)
         self.form.toolDelete.setEnabled(False)
         self.form.toolAdd.setEnabled(False)
+        self.form.toolEdit.setEnabled(False)
         self.form.TableList.setEnabled(False)
         self.form.libraryOpen.setEnabled(False)
         self.form.libraryExport.setEnabled(False)
@@ -619,44 +554,51 @@ class ToolBitLibrary(object):
         self.form.librarySave.setEnabled(False)
 
     def lockoff(self):
+        n_jobs = len(PathUtilsGui.PathUtils.GetJobs())
         self.toolTableView.setEnabled(True)
         self.form.toolCreate.setEnabled(True)
         self.form.toolDelete.setEnabled(True)
         self.form.toolAdd.setEnabled(True)
+        self.form.toolEdit.setEnabled(True)
         self.form.toolTable.setEnabled(True)
         self.form.TableList.setEnabled(True)
         self.form.libraryOpen.setEnabled(True)
         self.form.libraryExport.setEnabled(True)
-        self.form.addToolTable.setEnabled(True)
+        self.form.addToolTable.setEnabled(n_jobs > 0)
         self.form.librarySave.setEnabled(True)
 
-    def toolEdit(self, selected):
+    def toolEdit(self):
         Path.Log.track()
-        item = self.toolModel.item(selected.row(), 0)
+
+        # Ensure that exactly one row is (fully) selected.
+        selected_rows = self.toolTableView.selectionModel().selectedRows()
+        if len(selected_rows) != 1:
+            return
+
+        # Get the selected item.
+        index = selected_rows[0]
+        item = index.model().itemFromIndex(index)
 
         if self.temptool is not None:
             self.temptool.Document.removeObject(self.temptool.Name)
 
-        if selected.column() == 0:  # editing Nr
-            pass
-        else:
-            tbpath = item.data(_PathRole)
-            self.temptool = PathToolBit.ToolBitFactory().CreateFrom(tbpath, "temptool")
-            self.editor = PathToolBitEdit.ToolBitEditor(
-                self.temptool, self.form.toolTableGroup, loadBitBody=False
-            )
+        tbpath = item.data(_PathRole)
+        self.temptool = PathToolBit.ToolBitFactory().CreateFrom(tbpath, "temptool")
+        self.editor = PathToolBitEdit.ToolBitEditor(
+            self.temptool, self.form.toolTableGroup, loadBitBody=False
+        )
 
-            QBtn = (
-                PySide.QtGui.QDialogButtonBox.Ok | PySide.QtGui.QDialogButtonBox.Cancel
-            )
-            buttonBox = PySide.QtGui.QDialogButtonBox(QBtn)
-            buttonBox.accepted.connect(self.accept)
-            buttonBox.rejected.connect(self.reject)
+        QBtn = (
+            PySide.QtGui.QDialogButtonBox.Ok | PySide.QtGui.QDialogButtonBox.Cancel
+        )
+        buttonBox = PySide.QtGui.QDialogButtonBox(QBtn)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
 
-            layout = self.editor.form.layout()
-            layout.addWidget(buttonBox)
-            self.lockon()
-            self.editor.setupUI()
+        layout = self.editor.form.layout()
+        layout.addWidget(buttonBox)
+        self.lockon()
+        self.editor.setupUI()
 
     def toolEditDone(self, success=True):
         FreeCAD.ActiveDocument.removeObject("temptool")
@@ -726,7 +668,14 @@ class ToolBitLibrary(object):
         return lib, loc
 
     def columnNames(self):
-        return ["Nr", "Tool", "Shape"]
+        return ["Nr",
+                "Tool",
+                "Shape",
+                "Diameter",
+                "Cutting Edge",
+                "Shank",
+                "Length",
+                "Flutes"]
 
     def loadData(self, path=None):
         Path.Log.track(path)
@@ -773,11 +722,14 @@ class ToolBitLibrary(object):
 
         self.toolTableView.resizeColumnsToContents()
         self.toolTableView.selectionModel().selectionChanged.connect(self.toolSelect)
-        self.toolTableView.doubleClicked.connect(self.toolEdit)
+        self.toolTableView.doubleClicked.connect(
+            partial(self.selectedOrAllToolControllers)
+        )
 
         self.form.TableList.clicked.connect(self.tableSelected)
 
         self.form.toolAdd.clicked.connect(self.toolBitExisting)
+        self.form.toolEdit.clicked.connect(self.toolEdit)
         self.form.toolDelete.clicked.connect(self.toolDelete)
         self.form.toolCreate.clicked.connect(self.toolBitNew)
 
@@ -786,6 +738,8 @@ class ToolBitLibrary(object):
         self.form.libraryOpen.clicked.connect(self.libraryPath)
         self.form.librarySave.clicked.connect(self.libraryOk)
         self.form.libraryExport.clicked.connect(self.librarySaveAs)
+
+        self.form.addToolController.clicked.connect(self.selectedOrAllToolControllers)
 
         self.toolSelect([], [])
 
@@ -963,3 +917,57 @@ class ToolBitLibrary(object):
         if len(toollist) > 0:
             with open(path, "w") as fp:
                 fp.write(json.dumps(toollist, indent=2))
+
+    def selectedOrAllTools(self):
+        """
+        Iterate the selection and add individual tools
+        If a group is selected, iterate and add children
+        """
+
+        selected_rows = self.toolTableView.selectionModel().selectedRows()
+
+        itemsToProcess = []
+        for index in selected_rows:
+            item = index.model().itemFromIndex(index)
+
+            if item.hasChildren():
+                for i in range(item.rowCount() - 1):
+                    if item.child(i).column() == 0:
+                        itemsToProcess.append(item.child(i))
+
+            elif item.column() == 0:
+                itemsToProcess.append(item)
+
+        tools = []
+        for item in itemsToProcess:
+            toolNr = int(item.data(PySide.QtCore.Qt.EditRole))
+            toolPath = item.data(_PathRole)
+            tools.append((toolNr, PathToolBit.Factory.CreateFrom(toolPath)))
+        return tools
+
+    def selectedOrAllToolControllers(self, index=None):
+        """
+        if no jobs, don't do anything, otherwise all TCs for all
+        selected toolbits
+        """
+        print("Clicked", index)
+        jobs = PathUtilsGui.PathUtils.GetJobs()
+        if len(jobs) == 0:
+            return
+        elif len(jobs) == 1:
+            job = jobs[0]
+        else:
+            userinput = PathUtilsGui.PathUtilsUserInput()
+            job = userinput.chooseJob(jobs)
+
+        if job is None:  # user may have canceled
+            return
+
+        tools = self.selectedOrAllTools()
+
+        for tool in tools:
+            tc = PathToolControllerGui.Create(
+                "TC: {}".format(tool[1].Label), tool[1], tool[0]
+            )
+            job.Proxy.addToolController(tc)
+            FreeCAD.ActiveDocument.recompute()

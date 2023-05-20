@@ -61,6 +61,26 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="toolEdit">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Edit the selected tool.</string>
+       </property>
+       <property name="text">
+        <string>Edit</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../Path.qrc">
+         <normaloff>:/icons/Path_ToolEdit.svg</normaloff>:/icons/Path_ToolEdit.svg</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="toolDelete">
        <property name="maximumSize">
         <size>
@@ -250,6 +270,23 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+       <widget class="QPushButton" name="addToolController">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Create ToolControllers for the selected toolbits and add them to the Job</string>
+        </property>
+        <property name="text">
+         <string>Add To Job</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../Gui/Icons/resource.qrc">
+          <normaloff>:/icons/edit_OK.svg</normaloff>:/icons/edit_OK.svg</iconset>
+        </property>
+       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="librarySave">
