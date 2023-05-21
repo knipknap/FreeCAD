@@ -7,7 +7,7 @@
    id="svg2816"
    version="1.1"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   sodipodi:docname="Path_ToolBit.svg"
+   sodipodi:docname="Path_ToolEdit.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -829,7 +829,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="16"
-     inkscape:cx="-4.90625"
+     inkscape:cx="-17.53125"
      inkscape:cy="50.4375"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -898,7 +898,7 @@
      inkscape:groupmode="layer">
     <g
        id="g3908-2"
-       transform="translate(-52.906901,-2.0270691)">
+       transform="matrix(1.1048432,0,0,1.1048432,-62.136524,-5.5917368)">
       <g
          id="g3859-1"
          transform="matrix(0.78612717,0,0,1,48.768786,3)">
@@ -934,7 +934,7 @@
     </g>
     <g
        id="g9361"
-       transform="rotate(51.717408,53.614624,16.444904)">
+       transform="matrix(0.8183781,1.036894,-1.036894,0.8183781,29.319354,-54.579467)">
       <path
          style="fill:#ffdb00;fill-opacity:1;stroke:none;stroke-width:0.200234;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
          d="M 46.093485,50.156011 V 18.762854 H 58.39228 v 31.393157 z"
