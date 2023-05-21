@@ -950,7 +950,6 @@ class ToolBitLibrary(object):
         if no jobs, don't do anything, otherwise all TCs for all
         selected toolbits
         """
-        print("Clicked", index)
         jobs = PathUtilsGui.PathUtils.GetJobs()
         if len(jobs) == 0:
             return
