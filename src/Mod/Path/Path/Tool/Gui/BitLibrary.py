@@ -302,7 +302,7 @@ class ModelFactory(object):
         toolDiameter.setEditable(False)
         try:
             diameterStr = str(param.get('Diameter'))
-        except ValueError:
+        except (ValueError, TypeError):
             pass
         else:
             toolDiameter.setData(diameterStr, PySide.QtCore.Qt.EditRole)
@@ -312,7 +312,7 @@ class ModelFactory(object):
         cuttingEdge.setEditable(False)
         try:
             cuttingEdgeStr = str(param.get('CuttingEdgeHeight'))
-        except ValueError:
+        except (ValueError, TypeError):
             pass
         else:
             cuttingEdge.setData(cuttingEdgeStr, PySide.QtCore.Qt.EditRole)
@@ -322,7 +322,7 @@ class ModelFactory(object):
         shankDiameter.setEditable(False)
         try:
             shankDiameterStr = str(param.get('ShankDiameter'))
-        except ValueError:
+        except (ValueError, TypeError):
             pass
         else:
             shankDiameter.setData(shankDiameterStr, PySide.QtCore.Qt.EditRole)
@@ -332,7 +332,7 @@ class ModelFactory(object):
         toolLength.setEditable(False)
         try:
             lengthStr = str(param.get('Length'))
-        except ValueError:
+        except (ValueError, TypeError):
             pass
         else:
             toolLength.setData(lengthStr, PySide.QtCore.Qt.EditRole)
@@ -342,7 +342,7 @@ class ModelFactory(object):
         nFlutes.setEditable(False)
         try:
             flutesStr = str(int(param.get('Flutes')))
-        except ValueError:
+        except (ValueError, TypeError):
             pass
         else:
             nFlutes.setData(flutesStr, PySide.QtCore.Qt.EditRole)
@@ -372,7 +372,9 @@ class ModelFactory(object):
         except Exception as e:
             Path.Log.error(e)
 
-        datamodel.appendRow(self._toolAdd(nr, tool, path))
+        newRow = self._toolAdd(nr, tool, path)
+        datamodel.appendRow(newRow)
+        return newRow
 
     def findLibraries(self, model):
         """
@@ -440,32 +442,38 @@ class ToolBitLibrary(object):
     def toolBitNew(self):
         Path.Log.track()
 
-        # select the shape file
+        # Select the shape file.
         shapefile = PathToolBitGui.GetToolShapeFile()
         if shapefile is None:  # user canceled
             return
 
-        # select the bit file location and filename
-        filename = PathToolBitGui.GetNewToolFile()
-        if filename is None:
+        # Select the bit file location and filename
+        fullpath = PathToolBitGui.GetNewToolFile()
+        if fullpath is None:
             return
+        Path.Log.debug("filename: {}".format(fullpath))
+        filename = os.path.basename(fullpath)
 
-        # Parse out the name of the file and write the structure
-        loc, fil = os.path.split(filename)
-        fname = os.path.splitext(fil)[0]
-        fullpath = "{}{}{}.fctb".format(loc, os.path.sep, fname)
-        Path.Log.debug("fullpath: {}".format(fullpath))
-
-        self.temptool = PathToolBit.ToolBitFactory().Create(name=fname)
+        # Create the tool and save it to the file.
+        name = translate("Path", "New ToolBit")
+        self.temptool = PathToolBit.ToolBitFactory().Create(name=name)
         self.temptool.BitShape = shapefile
         self.temptool.Proxy.unloadBitBody(self.temptool)
-        self.temptool.Label = fname
+        self.temptool.Label = name
         self.temptool.Proxy.saveToFile(self.temptool, fullpath)
         self.temptool.Document.removeObject(self.temptool.Name)
         self.temptool = None
 
-        # add it to the model
-        self.factory.newTool(self.toolModel, fullpath)
+        # Add it to the tool list.
+        newItems = self.factory.newTool(self.toolModel, fullpath)
+
+        # Select the just-added ToolBit.
+        self.toolTableView.scrollToBottom()
+        last_row = self.toolModel.rowCount() - 1
+        self.toolTableView.selectRow(last_row)
+
+        # Open the tool editor.
+        self.toolEdit()
 
     def toolBitExisting(self):
 
@@ -491,10 +499,11 @@ class ToolBitLibrary(object):
             self.toolModel.removeRows(row, 1)
 
     def toolSelect(self, selected, deselected):
+        n_jobs = len(PathUtilsGui.PathUtils.GetJobs())
         sel = len(self.toolTableView.selectionModel().selectedRows())
         self.form.toolDelete.setEnabled(sel > 0)
         self.form.toolEdit.setEnabled(sel == 1)
-        self.form.addToolController.setEnabled(sel > 0)
+        self.form.addToolController.setEnabled(sel > 0 and n_jobs > 0)
 
     def tableSelected(self, index):
         """loads the tools for the selected tool table"""

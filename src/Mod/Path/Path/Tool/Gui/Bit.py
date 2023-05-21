@@ -29,6 +29,7 @@ import Path.Base.Gui.IconViewProvider as PathIconViewProvider
 import Path.Tool.Bit as PathToolBit
 import Path.Tool.Gui.BitEdit as PathToolBitEdit
 import os
+import uuid as UUID
 
 __title__ = "Tool Bit UI"
 __author__ = "sliptonic (Brad Collette)"
@@ -176,31 +177,28 @@ class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
         return tool
 
 
-def isValidFileName(filename):
-    print(filename)
-    try:
-        with open(filename, "w") as tempfile:
-            return True
-    except Exception:
-        return False
-
-
 def GetNewToolFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
 
-    foo = QtGui.QFileDialog.getSaveFileName(
-        parent, "Tool", Path.Preferences.lastPathToolBit(), "*.fctb"
-    )
-    if foo and foo[0]:
-        if not isValidFileName(foo[0]):
-            msgBox = QtGui.QMessageBox()
-            msg = translate("Path", "Invalid Filename")
-            msgBox.setText(msg)
-            msgBox.exec_()
-        else:
-            Path.Preferences.setLastPathToolBit(os.path.dirname(foo[0]))
-            return foo[0]
+    # Create a filename.
+    workingdir = os.path.dirname(Path.Preferences.lastPathToolLibrary())
+    filename = str(UUID.uuid4()) + '.fctb'
+    fullfilename = os.path.join(workingdir, "Bit", filename)
+
+    # Make sure that the file can be created.
+    try:
+        with open(fullfilename, "w"):
+            return fullfilename
+    except PermissionError:
+        msg = translate("Path", "ToolBit folder {} is not writable").format(workingdir)
+    except Exception as e:
+        msg = translate("Path", "Unknown error opening {}: {}").format(fullfilename, e)
+
+    # Ending up here, there was an error. Display it to the user.
+    msgBox = QtGui.QMessageBox()
+    msgBox.setText(msg)
+    msgBox.exec_()
     return None
 
 
