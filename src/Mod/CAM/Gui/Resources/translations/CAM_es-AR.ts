@@ -8691,26 +8691,6 @@ Por ejemplo:
   <context>
     <name>CAM_Toolbit</name>
     <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="116"/>
-      <source>Toolbit cannot be edited: Shapefile not found</source>
-      <translation>No se puede editar la herramienta: No se encuentra el archivo de forma</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="192"/>
-      <source>Tool</source>
-      <translation>Herramienta</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="198"/>
-      <source>Invalid Filename</source>
-      <translation>Nombre de archivo inválido</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="241"/>
-      <source>Select Tool Shape</source>
-      <translation>Seleccionar forma de herramienta</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="465"/>
       <source>Select a library</source>
       <translation>Seleccione una biblioteca</translation>

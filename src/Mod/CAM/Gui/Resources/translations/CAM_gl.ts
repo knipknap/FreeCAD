@@ -4219,11 +4219,6 @@ For example:
       <translation type="unfinished">Choose a Path Job</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="199"/>
-      <source>Invalid Filename</source>
-      <translation type="unfinished">Invalid Filename</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathUtils.py" line="545"/>
       <source>Selected tool is not a drill</source>
       <translation type="unfinished">Selected tool is not a drill</translation>
@@ -6328,11 +6323,6 @@ Aborting op creation</translation>
   </context>
   <context>
     <name>PathToolBit</name>
-    <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="118"/>
-      <source>Toolbit cannot be edited: Shapefile not found</source>
-      <translation type="unfinished">Toolbit cannot be edited: Shapefile not found</translation>
-    </message>
   </context>
   <context>
     <name>PathGui</name>

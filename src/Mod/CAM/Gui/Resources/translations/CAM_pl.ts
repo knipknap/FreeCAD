@@ -8723,26 +8723,6 @@ Czy geometria bazowa została wybrana?</translation>
   <context>
     <name>CAM_Toolbit</name>
     <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="116"/>
-      <source>Toolbit cannot be edited: Shapefile not found</source>
-      <translation>Nie można edytować narzędzi: Nie znaleziono pliku z danymi kształtu</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="192"/>
-      <source>Tool</source>
-      <translation>Narzędzie</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="198"/>
-      <source>Invalid Filename</source>
-      <translation>Nieprawidłowa nazwa pliku</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="241"/>
-      <source>Select Tool Shape</source>
-      <translation>Wybierz kształt narzędzia</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="465"/>
       <source>Select a library</source>
       <translation>Wybierz bibliotekę</translation>

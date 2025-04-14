@@ -8502,25 +8502,5 @@ For example:
   </context>
   <context>
     <name>CAM_Toolbit</name>
-    <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="118"/>
-      <source>Toolbit cannot be edited: Shapefile not found</source>
-      <translation type="unfinished">Toolbit cannot be edited: Shapefile not found</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="193"/>
-      <source>Tool</source>
-      <translation>Tool</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="199"/>
-      <source>Invalid Filename</source>
-      <translation type="unfinished">Invalid Filename</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="242"/>
-      <source>Select Tool Shape</source>
-      <translation type="unfinished">Select Tool Shape</translation>
-    </message>
   </context>
 </TS>
