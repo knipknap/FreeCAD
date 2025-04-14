@@ -329,18 +329,11 @@ SET(Tools_Library_SRCS
     Tools/Library/Default.fctl
 )
 
-SET(Tools_Shape_SRCS
-    Tools/Shape/ballend.fcstd
-    Tools/Shape/bullnose.fcstd
-    Tools/Shape/chamfer.fcstd
-    Tools/Shape/dovetail.fcstd
-    Tools/Shape/drill.fcstd
-    Tools/Shape/endmill.fcstd
-    Tools/Shape/probe.fcstd
-    Tools/Shape/slittingsaw.fcstd
-    Tools/Shape/tap.fcstd
-    Tools/Shape/thread-mill.fcstd
-    Tools/Shape/v-bit.fcstd
+# Automatically find all shape and icon files in the Tools/Shape directory
+file(GLOB Tools_Shape_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    "Tools/Shape/*.fcstd"
+    "Tools/Shape/*.svg"
+    "Tools/Shape/*.png"
 )
 
 SET(Tests_SRCS
@@ -418,15 +411,8 @@ SET(PathImages_Ops
     Images/Ops/chamfer.svg
 )
 
-SET(PathImages_Tools
-    Images/Tools/drill.svg
-    Images/Tools/endmill.svg
-    Images/Tools/v-bit.svg
-)
-
 SET(Path_Images
     ${PathImages_Ops}
-    ${PathImages_Tools}
 )
 
 SET(PathData_Threads

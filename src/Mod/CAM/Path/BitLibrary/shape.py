@@ -12,7 +12,7 @@ from .fcutil import load_shape_properties, \
                     shape_properties_to_shape, \
                     create_thumbnail
 
-builtin_shape_dir = os.path.join(const.resource_dir, 'shapes')
+builtin_shape_dir = const.builtin_shape_dir
 builtin_shape_ext = '.fcstd'
 builtin_shape_pattern = os.path.join(builtin_shape_dir, '*.fcstd')
 builtin_shape_list = [
@@ -122,7 +122,7 @@ class Shape():
             raise OSError('shape "{}" not found: {}'.format(name, self.filename))
 
     def __str__(self):
-        return self.name
+        return self.name if self.name is not None else ""
 
     def __eq__(self, other):
         return self.name == other.name
@@ -179,7 +179,7 @@ class Shape():
         return summary.strip()
 
     def get_params_by_group(self, group):
-        return [p for p in self.params.values() if param.group == group]
+        return [p for p in self.params.values() if p.group == group]
 
     def get_well_known_params(self):
         for name in self.well_known:
@@ -195,15 +195,16 @@ class Shape():
         return self.name in Shape.builtin
 
     def get_label(self):
-        return self.name.capitalize()
+        return self.name.capitalize() if self.name is not None else ""
 
     def get_filename(self):
         return self.filename
 
     def write_to_file(self, filename):
-        if filename == self.filename:
+        if filename == self.filename or not self.filename:
             return
-        shutil.copy(self.filename, filename)
+        if isinstance(self.filename, str):
+            shutil.copy(self.filename, filename)
 
     def get_shank_diameter(self):
         item = self.params.get('ShankDiameter')
@@ -243,7 +244,8 @@ class Shape():
 
     def get_corner_radius(self):
         if self.name == 'ballend':
-            return self.get_diameter()/2
+            diameter = self.get_diameter()
+            return diameter / 2 if diameter is not None else 0
         item = self.params.get('TorusRadius')
         return item.value('mm') if item else 0
 
@@ -266,10 +268,12 @@ class Shape():
 
     def get_material(self):
         material = self.get_param('Material')
-        if material.v.lower() == 'hss':
-            return HSS
-        elif material.v.lower() == 'carbide':
-            return Carbide
+        if material and hasattr(material, 'v'):
+            mat_lower = str(material.v).lower()
+            if mat_lower == 'hss':
+                return HSS
+            elif mat_lower == 'carbide':
+                return Carbide
         return None
 
     def get_icon(self):
