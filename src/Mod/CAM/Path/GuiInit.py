@@ -79,7 +79,6 @@ def Startup():
         from Path.Op.Gui import Vcarve
         from Path.Post import Command
         from Path.Tool import Controller
-        from Path.Tool.Gui import Controller
 
         from PathScripts import PathUtilsGui
 

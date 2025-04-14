@@ -119,14 +119,60 @@ SET(PathPythonTools_SRCS
     Path/Tool/Controller.py
 )
 
-SET(PathPythonToolsGui_SRCS
-    Path/Tool/Gui/__init__.py
-    Path/Tool/Gui/Bit.py
-    Path/Tool/Gui/BitCmd.py
-    Path/Tool/Gui/BitEdit.py
-    Path/Tool/Gui/BitLibraryCmd.py
-    Path/Tool/Gui/BitLibrary.py
-    Path/Tool/Gui/Controller.py
+# Define BitLibrary Python source files
+set(PathBitLibrary_Python_SRCS
+    Path/BitLibrary/__init__.py
+    Path/BitLibrary/cli.py
+    Path/BitLibrary/Commands.py # Added command file
+    Path/BitLibrary/const.py
+    Path/BitLibrary/db.py
+    Path/BitLibrary/fcutil.py
+    Path/BitLibrary/feedcli.py
+    Path/BitLibrary/i18n.py
+    Path/BitLibrary/library.py
+    Path/BitLibrary/machine.py
+    Path/BitLibrary/params.py
+    # Removed Path/BitLibrary/qbtl.py
+    Path/BitLibrary/shape.py
+    Path/BitLibrary/tool.py
+    Path/BitLibrary/toolmaterial.py
+    Path/BitLibrary/toolpixmap.py
+    Path/BitLibrary/units.py
+    Path/BitLibrary/util.py
+    Path/BitLibrary/feeds/__init__.py
+    Path/BitLibrary/feeds/calc.py
+    Path/BitLibrary/feeds/material.py
+    Path/BitLibrary/feeds/operation.py
+    Path/BitLibrary/feeds/util.py
+    Path/BitLibrary/serializers/__init__.py
+    Path/BitLibrary/serializers/camoticsserializer.py
+    Path/BitLibrary/serializers/fcserializer.py
+    Path/BitLibrary/serializers/fusionserializer.py
+    Path/BitLibrary/serializers/linuxcncserializer.py
+    Path/BitLibrary/serializers/serializer.py
+    Path/BitLibrary/ui/init.py
+    Path/BitLibrary/ui/curve.py
+    Path/BitLibrary/ui/feedsandspeeds.py
+    Path/BitLibrary/ui/flowlayout.py
+    Path/BitLibrary/ui/jobselector.py
+    Path/BitLibrary/ui/library.py
+    Path/BitLibrary/ui/libraryproperties.py
+    Path/BitLibrary/ui/machineeditor.py
+    Path/BitLibrary/ui/movetool.py
+    Path/BitLibrary/ui/preferences.py
+    Path/BitLibrary/ui/shapebutton.py
+    Path/BitLibrary/ui/shapeselector.py
+    Path/BitLibrary/ui/shapewidget.py
+    Path/BitLibrary/ui/spinbox.py
+    Path/BitLibrary/ui/tablecell.py
+    Path/BitLibrary/ui/tooleditor.py
+    Path/BitLibrary/ui/toolproperties.py
+    Path/BitLibrary/ui/util.py
+)
+
+# Define BitLibrary Icon files
+file(GLOB_RECURSE PathBitLibrary_ICON_FILES FOLLOW_SYMLINKS
+    Path/BitLibrary/resources/icons/*.svg
 )
 
 SET(PathPythonPost_SRCS
@@ -413,7 +459,8 @@ SET(all_files
     ${PathPythonPost_SRCS}
     ${PathPythonPostScripts_SRCS}
     ${PathPythonTools_SRCS}
-    ${PathPythonToolsGui_SRCS}
+    ${PathBitLibrary_Python_SRCS}
+    # Removed ${PathBitLibrary_UI_PYTHON_SRCS} from all_files
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -542,11 +589,22 @@ INSTALL(
         Mod/CAM/Path/Tool
 )
 
+# Install BitLibrary Python files (including generated UI modules if qt_wrap_ui was used)
 INSTALL(
     FILES
-        ${PathPythonToolsGui_SRCS}
+        ${PathBitLibrary_Python_SRCS}
+        # ${PathBitLibrary_UI_PYTHON_SRCS} # Not needed if UI files loaded dynamically
     DESTINATION
-        Mod/CAM/Path/Tool/Gui
+        Mod/CAM/Path/BitLibrary
+    # Add specific subdirectories if needed, e.g., for feeds, serializers, ui
+    # This might require splitting PathBitLibrary_Python_SRCS or using DIRECTORY install
+)
+
+INSTALL(
+    FILES
+        ${PathBitLibrary_ICON_FILES}
+    DESTINATION
+        Mod/CAM/Path/BitLibrary/icons # Install locally for now
 )
 
 INSTALL(

@@ -74,8 +74,7 @@ class CAMWorkbench(Workbench):
 
         from Path.Main.Gui import JobCmd as PathJobCmd
         from Path.Main.Gui import SanityCmd as SanityCmd
-        from Path.Tool.Gui import BitCmd as PathToolBitCmd
-        from Path.Tool.Gui import BitLibraryCmd as PathToolBitLibraryCmd
+        from Path.BitLibrary import Commands as BitLibraryCommands
 
         from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -135,8 +134,8 @@ class CAMWorkbench(Workbench):
         extracmdlist = []
         specialcmdlist = []
 
-        toolcmdlist.extend(PathToolBitLibraryCmd.BarList)
-        toolbitcmdlist = PathToolBitLibraryCmd.MenuList
+        toolcmdlist.extend(BitLibraryCommands.BarList)
+        toolbitcmdlist = BitLibraryCommands.MenuList
 
         engravecmdgroup = ["CAM_EngraveTools"]
         FreeCADGui.addCommand(

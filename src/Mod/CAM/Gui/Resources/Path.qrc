@@ -143,5 +143,14 @@
         <file>preferences/Advanced.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>
+        <file>bitlibrary/feedsandspeeds.ui</file>
+        <file>bitlibrary/jobselector.ui</file>
+        <file>bitlibrary/library.ui</file>
+        <file>bitlibrary/libraryproperties.ui</file>
+        <file>bitlibrary/machineeditor.ui</file>
+        <file>bitlibrary/movetool.ui</file>
+        <file>bitlibrary/preferences.ui</file>
+        <file>bitlibrary/shapeselector.ui</file>
+        <file>bitlibrary/tooleditor.ui</file>
     </qresource>
 </RCC>
