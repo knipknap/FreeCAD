@@ -22,6 +22,7 @@
 
 import FreeCAD
 import Path
+import PathApp
 import Path.Base.Generator.dogboneII as dogboneII
 import Path.Base.Language as PathLanguage
 import Path.Dressup.DogboneII
@@ -49,7 +50,7 @@ class MockOp(object):
     def __init__(self, path, dia=2):
         self.Name = "OP"
         self.Label = "OP"
-        self.Path = Path.Path(path)
+        self.Path = PathApp.Path(path)
         self.ToolController = MockTC(dia)
 
 
@@ -59,7 +60,7 @@ class MockFeaturePython(object):
         self.addProperty("App::PropertyString", "Name", val=name)
         self.addProperty("App::PropertyString", "Label", val=name)
         self.addProperty("App::PropertyLink", "Proxy")
-        self.addProperty("Path::Path", "Path", val=Path.Path())
+        self.addProperty("Path::Path", "Path", val=PathApp.Path())
 
     def addProperty(self, typ, name, grp=None, desc=None, val=None):
         self.prop[name] = (typ, val)

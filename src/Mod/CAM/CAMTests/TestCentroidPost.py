@@ -26,6 +26,7 @@ from importlib import reload
 import FreeCAD
 
 import Path
+import PathApp
 import CAMTests.PathTestUtils as PathTestUtils
 from Path.Post.scripts import centroid_post as postprocessor
 
@@ -86,7 +87,7 @@ class TestCentroidPost(PathTestUtils.PathTestBase):
         Empty path.  Produces only the preamble and postable.
         """
 
-        self.docobj.Path = Path.Path([])
+        self.docobj.Path = PathApp.Path([])
         postables = [self.docobj]
 
         # Test generating with header
@@ -111,7 +112,7 @@ G90 G80 G40 G49
 M99
 """
 
-        self.docobj.Path = Path.Path([])
+        self.docobj.Path = PathApp.Path([])
         postables = [self.docobj]
 
         args = "--no-header --no-show-editor"
@@ -138,9 +139,9 @@ M99
         """Test command Generation.
         Test Precision
         """
-        c = Path.Command("G0 X10 Y20 Z30")
+        c = PathApp.Command("G0 X10 Y20 Z30")
 
-        self.docobj.Path = Path.Path([c])
+        self.docobj.Path = PathApp.Path([c])
         postables = [self.docobj]
 
         args = "--no-header --no-show-editor"
@@ -159,9 +160,9 @@ M99
         """
         Test Line Numbers
         """
-        c = Path.Command("G0 X10 Y20 Z30")
+        c = PathApp.Command("G0 X10 Y20 Z30")
 
-        self.docobj.Path = Path.Path([c])
+        self.docobj.Path = PathApp.Path([c])
         postables = [self.docobj]
 
         args = "--no-header --line-numbers --no-show-editor"
@@ -175,7 +176,7 @@ M99
         Test Pre-amble
         """
 
-        self.docobj.Path = Path.Path([])
+        self.docobj.Path = PathApp.Path([])
         postables = [self.docobj]
 
         #
@@ -191,7 +192,7 @@ M99
         """
         Test Post-amble
         """
-        self.docobj.Path = Path.Path([])
+        self.docobj.Path = PathApp.Path([])
         postables = [self.docobj]
         #
         # The original centroid postprocessor does not have a
@@ -206,8 +207,8 @@ M99
         Test inches
         """
 
-        c = Path.Command("G0 X10 Y20 Z30")
-        self.docobj.Path = Path.Path([c])
+        c = PathApp.Command("G0 X10 Y20 Z30")
+        self.docobj.Path = PathApp.Path([c])
         postables = [self.docobj]
 
         args = "--no-header --inches --no-show-editor"
@@ -229,10 +230,10 @@ M99
         Test test modal
         Suppress the command name if the same as previous
         """
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
+        c = PathApp.Command("G0 X10 Y20 Z30")
+        c1 = PathApp.Command("G0 X10 Y30 Z30")
 
-        self.docobj.Path = Path.Path([c, c1])
+        self.docobj.Path = PathApp.Path([c, c1])
         postables = [self.docobj]
 
         #
@@ -250,10 +251,10 @@ M99
         Test axis modal
         Suppress the axis coordinate if the same as previous
         """
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
+        c = PathApp.Command("G0 X10 Y20 Z30")
+        c1 = PathApp.Command("G0 X10 Y30 Z30")
 
-        self.docobj.Path = Path.Path([c, c1])
+        self.docobj.Path = PathApp.Path([c, c1])
         postables = [self.docobj]
 
         #
@@ -270,9 +271,9 @@ M99
         """
         Test tool change
         """
-        c = Path.Command("M6 T2")
-        c2 = Path.Command("M3 S3000")
-        self.docobj.Path = Path.Path([c, c2])
+        c = PathApp.Command("M6 T2")
+        c2 = PathApp.Command("M3 S3000")
+        self.docobj.Path = PathApp.Path([c, c2])
         postables = [self.docobj]
 
         args = "--no-header --no-show-editor"
@@ -295,9 +296,9 @@ M99
         Test comment
         """
 
-        c = Path.Command("(comment)")
+        c = PathApp.Command("(comment)")
 
-        self.docobj.Path = Path.Path([c])
+        self.docobj.Path = PathApp.Path([c])
         postables = [self.docobj]
 
         args = "--no-header --no-show-editor"

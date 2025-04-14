@@ -24,6 +24,7 @@
 import FreeCAD
 
 import Path
+import PathApp
 import CAMTests.PathTestUtils as PathTestUtils
 from Path.Post.Processor import PostProcessorFactory
 
@@ -98,7 +99,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         nl = "\n"
         self.job.PostProcessorArgs = args
         # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
+        self.profile_op.Path = PathApp.Path(path)
         # the gcode is in the first section for this particular job and operation
         gcode = self.post.export()[0][1]
         if debug:
@@ -111,7 +112,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         nl = "\n"
         self.job.PostProcessorArgs = args
         # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
+        self.profile_op.Path = PathApp.Path(path)
         # the gcode is in the first section for this particular job and operation
         gcode = self.post.export()[0][1]
         if debug:
@@ -137,9 +138,9 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         """
         nl = "\n"
 
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
-        self.profile_op.Path = Path.Path([c, c1])
+        c = PathApp.Command("G0 X10 Y20 Z30")
+        c1 = PathApp.Command("G0 X10 Y30 Z30")
+        self.profile_op.Path = PathApp.Path([c, c1])
 
         self.job.PostProcessorArgs = "--axis-modal"
         gcode = self.post.export()[0][1]
@@ -197,13 +198,13 @@ M6 T1
     def test00125(self) -> None:
         """Test chipbreaking amount."""
         path = [
-            Path.Command("G0 X1 Y2"),
-            Path.Command("G0 Z8"),
-            Path.Command("G90"),
-            Path.Command("G99"),
-            Path.Command("G73 X1 Y2 Z0 F123 Q1.5 R5"),
-            Path.Command("G80"),
-            Path.Command("G90"),
+            PathApp.Command("G0 X1 Y2"),
+            PathApp.Command("G0 Z8"),
+            PathApp.Command("G90"),
+            PathApp.Command("G99"),
+            PathApp.Command("G73 X1 Y2 Z0 F123 Q1.5 R5"),
+            PathApp.Command("G80"),
+            PathApp.Command("G90"),
         ]
         # check the default chipbreaking amount
         self.multi_compare(
@@ -261,13 +262,13 @@ G90
         )
         # check for an inch/imperial chipbreaking amount
         path = [
-            Path.Command("G0 X25.4 Y50.8"),
-            Path.Command("G0 Z203.2"),
-            Path.Command("G90"),
-            Path.Command("G99"),
-            Path.Command("G73 X25.4 Y50.8 Z0 F123 Q38.1 R127"),
-            Path.Command("G80"),
-            Path.Command("G90"),
+            PathApp.Command("G0 X25.4 Y50.8"),
+            PathApp.Command("G0 Z203.2"),
+            PathApp.Command("G90"),
+            PathApp.Command("G99"),
+            PathApp.Command("G73 X25.4 Y50.8 Z0 F123 Q38.1 R127"),
+            PathApp.Command("G80"),
+            PathApp.Command("G90"),
         ]
         self.multi_compare(
             path,
@@ -303,7 +304,7 @@ G90
         self.single_compare("G0 X10 Y20 Z30", "G0 X10.000 Y20.000 Z30.000", "")
         self.single_compare("G0 X10 Y20 Z30", "G0X10.000Y20.000Z30.000", "--command_space=''")
         self.single_compare("G0 X10 Y20 Z30", "G0_X10.000_Y20.000_Z30.000", "--command_space='_'")
-        path = [Path.Command("(comment with spaces)")]
+        path = [PathApp.Command("(comment with spaces)")]
         self.multi_compare(
             path,
             """(Begin preamble)
@@ -349,7 +350,7 @@ G54
 
     def test00127(self) -> None:
         """Test comment symbol."""
-        path = [Path.Command("(comment with spaces)")]
+        path = [PathApp.Command("(comment with spaces)")]
         self.multi_compare(
             path,
             """(Begin preamble)
@@ -417,8 +418,8 @@ G54
         """Test comments."""
         nl = "\n"
 
-        c = Path.Command("(comment)")
-        self.profile_op.Path = Path.Path([c])
+        c = PathApp.Command("(comment)")
+        self.profile_op.Path = PathApp.Path([c])
 
         self.job.PostProcessorArgs = "--comments"
         gcode = self.post.export()[0][1]
@@ -431,8 +432,8 @@ G54
         """Test feed-precision."""
         nl = "\n"
 
-        c = Path.Command("G1 X10 Y20 Z30 F123.123456")
-        self.profile_op.Path = Path.Path([c])
+        c = PathApp.Command("G1 X10 Y20 Z30 F123.123456")
+        self.profile_op.Path = PathApp.Path([c])
 
         self.job.PostProcessorArgs = ""
         gcode = self.post.export()[0][1]
@@ -457,7 +458,7 @@ G54
         """
         nl = "\n"
 
-        self.profile_op.Path = Path.Path([])
+        self.profile_op.Path = PathApp.Path([])
 
         # Test generating with comments and header.
         self.job.PostProcessorArgs = "--comments --header"
@@ -547,9 +548,9 @@ M6 T1
         """Test inches."""
         nl = "\n"
 
-        c = Path.Command("G0 X10 Y20 Z30 A10 B20 C30 U10 V20 W30")
+        c = PathApp.Command("G0 X10 Y20 Z30 A10 B20 C30 U10 V20 W30")
 
-        self.profile_op.Path = Path.Path([c])
+        self.profile_op.Path = PathApp.Path([c])
         self.job.PostProcessorArgs = "--inches"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
@@ -568,9 +569,9 @@ M6 T1
         """
         nl = "\n"
 
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
-        self.profile_op.Path = Path.Path([c, c1])
+        c = PathApp.Command("G0 X10 Y20 Z30")
+        c1 = PathApp.Command("G0 X10 Y30 Z30")
+        self.profile_op.Path = PathApp.Path([c, c1])
 
         self.job.PostProcessorArgs = "--modal"
         gcode = self.post.export()[0][1]
@@ -659,7 +660,7 @@ M6 T1
   --wait-for-spindle WAIT_FOR_SPINDLE
                         Time to wait (in seconds) after M3, M4 (default = 0.0)
 """
-        self.profile_op.Path = Path.Path([])
+        self.profile_op.Path = PathApp.Path([])
 
         self.job.PostProcessorArgs = "--output_all_arguments"
         gcode = self.post.export()[0][1]
@@ -679,7 +680,7 @@ M6 T1
 
         Empty path.  Outputs visible arguments.
         """
-        self.profile_op.Path = Path.Path([])
+        self.profile_op.Path = PathApp.Path([])
         expected = ""
         self.job.PostProcessorArgs = "--output_visible_arguments"
         gcode = self.post.export()[0][1]
@@ -691,7 +692,7 @@ M6 T1
         """Test Post-amble."""
         nl = "\n"
 
-        self.profile_op.Path = Path.Path([])
+        self.profile_op.Path = PathApp.Path([])
         self.job.PostProcessorArgs = "--postamble='G0 Z50\nM2'"
         gcode = self.post.export()[0][1]
         split_gcode = gcode.splitlines()
@@ -705,7 +706,7 @@ M6 T1
         """Test Pre-amble."""
         nl = "\n"
 
-        self.profile_op.Path = Path.Path([])
+        self.profile_op.Path = PathApp.Path([])
         self.job.PostProcessorArgs = "--preamble='G18 G55'"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
@@ -738,10 +739,10 @@ M6 T1
         """Test tlo."""
         nl = "\n"
 
-        c = Path.Command("M6 T2")
-        c2 = Path.Command("M3 S3000")
+        c = PathApp.Command("M6 T2")
+        c2 = PathApp.Command("M3 S3000")
 
-        self.profile_op.Path = Path.Path([c, c2])
+        self.profile_op.Path = PathApp.Path([c, c2])
 
         self.job.PostProcessorArgs = "--tlo"
         gcode = self.post.export()[0][1]
@@ -765,9 +766,9 @@ M6 T1
         """Test tool_change."""
         nl = "\n"
 
-        c = Path.Command("M6 T2")
-        c2 = Path.Command("M3 S3000")
-        self.profile_op.Path = Path.Path([c, c2])
+        c = PathApp.Command("M6 T2")
+        c2 = PathApp.Command("M3 S3000")
+        self.profile_op.Path = PathApp.Path([c, c2])
 
         self.job.PostProcessorArgs = "--tool_change"
         gcode = self.post.export()[0][1]
@@ -789,8 +790,8 @@ M6 T1
         """Test wait-for-spindle."""
         nl = "\n"
 
-        c = Path.Command("M3 S3000")
-        self.profile_op.Path = Path.Path([c])
+        c = PathApp.Command("M3 S3000")
+        self.profile_op.Path = PathApp.Path([c])
 
         self.job.PostProcessorArgs = ""
         gcode = self.post.export()[0][1]
@@ -804,8 +805,8 @@ M6 T1
         self.assertEqual(split_gcode[4], "M3 S3000")
         self.assertEqual(split_gcode[5], "G4 P1.23456")
 
-        c = Path.Command("M4 S3000")
-        self.profile_op.Path = Path.Path([c])
+        c = PathApp.Command("M4 S3000")
+        self.profile_op.Path = PathApp.Path([c])
 
         # This also tests that the default for --wait-for-spindle
         # goes back to 0.0 (no wait)

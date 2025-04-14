@@ -21,6 +21,7 @@ import re
 import FreeCAD
 
 import Path
+import PathApp
 import CAMTests.PathTestUtils as PathTestUtils
 from Path.Post.Processor import PostProcessorFactory
 
@@ -65,7 +66,7 @@ class TestSnapmakerPost(PathTestUtils.PathTestBase):
 
     def get_gcode(self, ops: [str], arguments: str) -> str:
         """Get postprocessed gcode from a list of operations and postprocessor arguments"""
-        self.profile_op.Path = Path.Path(ops)
+        self.profile_op.Path = PathApp.Path(ops)
         self.job.PostProcessorArgs = "--no-show-editor --no-gui --no-thumbnail " + arguments
         return self.post.export()[0][1]
 

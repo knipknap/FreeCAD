@@ -35,7 +35,6 @@ import Path.Main.Gui.JobCmd as PathJobCmd
 import Path.Main.Gui.JobDlg as PathJobDlg
 import Path.Main.Job as PathJob
 import Path.Main.Stock as PathStock
-import Path.Tool.Gui.Bit as PathToolBitGui
 import Path.Tool.Gui.Controller as PathToolControllerGui
 import PathScripts.PathUtils as PathUtils
 import json
@@ -1066,33 +1065,6 @@ class TaskPanel:
         self.setFields()
         self.toolControllerSelect()
 
-    def toolControllerAdd(self):
-        # adding a TC from a toolbit directly.
-        # Try to find a tool number from the currently selected lib. Otherwise
-        # use next available number
-
-        tools = PathToolBitGui.LoadTools()
-
-        curLib = Path.Preferences.lastFileToolLibrary()
-
-        library = None
-        if curLib is not None:
-            with open(curLib) as fp:
-                library = json.load(fp)
-
-        for tool in tools:
-            toolNum = self.obj.Proxy.nextToolNumber()
-            if library is not None:
-                for toolBit in library["tools"]:
-
-                    if toolBit["path"] == tool.File:
-                        toolNum = toolBit["nr"]
-
-            tc = PathToolControllerGui.Create(name=tool.Label, tool=tool, toolNumber=toolNum)
-            self.obj.Proxy.addToolController(tc)
-
-        FreeCAD.ActiveDocument.recompute()
-        self.updateToolController()
 
     def toolControllerDelete(self):
         self.objectDelete(self.form.toolControllerList)
@@ -1530,7 +1502,6 @@ class TaskPanel:
         self.form.toolControllerList.itemChanged.connect(self.toolControllerChanged)
         self.form.toolControllerEdit.clicked.connect(self.toolControllerEdit)
         self.form.toolControllerDelete.clicked.connect(self.toolControllerDelete)
-        self.form.toolControllerAdd.clicked.connect(self.toolControllerAdd)
 
         self.operationSelect()
         self.toolControllerSelect()
@@ -1629,7 +1600,8 @@ class TaskPanel:
             self.form.setCurrentIndex(3)  # Change tab to Tools tab
             no_tool_txt = translate("CAM_Job", "This job has no tool.")
             if _displayWarningWindow(no_tool_txt) == 1:
-                self.toolControllerAdd()
+                # If user clicks 'Add' when no tools exist, open the BitLibrary UI
+                FreeCADGui.runCommand("CAM_BitLibraryOpen")
 
     # SelectionObserver interface
     def addSelection(self, doc, obj, sub, pnt):

@@ -22,6 +22,7 @@
 
 import FreeCAD
 import Path
+import PathApp
 import Path.Dressup.Gui.Dogbone as PathDressupDogbone
 import Path.Main.Job as PathJob
 import Path.Op.Profile as PathProfile
@@ -33,14 +34,14 @@ class TestProfile:
     def __init__(self, side, direction, path):
         self.Side = side
         self.Direction = direction
-        self.Path = Path.Path(path)
+        self.Path = PathApp.Path(path)
         self.ToolController = None  # default tool 5mm
         self.Name = "Profile"
 
 
 class TestFeature:
     def __init__(self):
-        self.Path = Path.Path()
+        self.Path = PathApp.Path()
 
     def addProperty(self, typ, name, category, tip):
         setattr(self, name, None)

@@ -24,6 +24,7 @@ import FreeCAD
 from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
+import PathApp
 import Path.Base.Util as PathUtil
 import PathScripts.PathUtils as PathUtils
 import math
@@ -737,7 +738,7 @@ class ObjectOp(object):
         Path.Log.track()
 
         if not obj.Active:
-            path = Path.Path("(inactive operation)")
+            path = PathApp.Path("(inactive operation)")
             obj.Path = path
             return
 
@@ -781,17 +782,17 @@ class ObjectOp(object):
         obj.recompute()
 
         self.commandlist = []
-        self.commandlist.append(Path.Command("(%s)" % obj.Label))
+        self.commandlist.append(PathApp.Command("(%s)" % obj.Label))
         if obj.Comment:
-            self.commandlist.append(Path.Command("(%s)" % obj.Comment))
+            self.commandlist.append(PathApp.Command("(%s)" % obj.Comment))
 
         result = self.opExecute(obj)
 
         if self.commandlist and (FeatureHeights & self.opFeatures(obj)):
             # Let's finish by rapid to clearance...just for safety
-            self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+            self.commandlist.append(PathApp.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
-        path = Path.Path(self.commandlist)
+        path = PathApp.Path(self.commandlist)
         obj.Path = path
         obj.CycleTime = self.getCycleTimeEstimate(obj)
         self.job.Proxy.getCycleTime()

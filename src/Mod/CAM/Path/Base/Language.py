@@ -22,6 +22,7 @@
 
 import FreeCAD
 import Path
+import PathApp
 import math
 
 __title__ = "PathLanguage - classes for an internal language/representation for Path"
@@ -37,9 +38,9 @@ class Instruction(object):
 
     def __init__(self, begin, cmd, param=None):
         self.begin = begin
-        if type(cmd) == Path.Command:
-            self.cmd = Path.Name
-            self.param = Path.Parameters
+        if type(cmd) == PathApp.Command:
+            self.cmd = PathApp.Name
+            self.param = PathApp.Parameters
         else:
             self.cmd = cmd
             if param is None:
@@ -230,7 +231,7 @@ class Maneuver(object):
         self.instr.extend(coll)
 
     def toPath(self):
-        return Path.Path([instruction_to_command(instr) for instr in self.instr])
+        return PathApp.Path([instruction_to_command(instr) for instr in self.instr])
 
     def __repr__(self):
         if self.instr:
@@ -264,8 +265,8 @@ class Maneuver(object):
 
     @classmethod
     def FromGCode(cls, gcode, begin=None):
-        return cls.FromPath(Path.Path(gcode), begin)
+        return cls.FromPath(PathApp.Path(gcode), begin)
 
 
 def instruction_to_command(instr):
-    return Path.Command(instr.cmd, instr.param)
+    return PathApp.Command(instr.cmd, instr.param)

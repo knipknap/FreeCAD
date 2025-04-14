@@ -22,6 +22,7 @@
 
 import Part
 import Path
+import PathApp
 import math
 
 from FreeCAD import Vector
@@ -402,12 +403,12 @@ class TestPathGeom(PathTestBase):
         """Verify proper geometry objects for G1 and G01 commands are created."""
         spt = Vector(1, 2, 3)
         self.assertLine(
-            Path.Geom.edgeForCmd(Path.Command("G1", {"X": 7, "Y": 2, "Z": 3}), spt),
+            Path.Geom.edgeForCmd(PathApp.Command("G1", {"X": 7, "Y": 2, "Z": 3}), spt),
             spt,
             Vector(7, 2, 3),
         )
         self.assertLine(
-            Path.Geom.edgeForCmd(Path.Command("G01", {"X": 1, "Y": 3, "Z": 5}), spt),
+            Path.Geom.edgeForCmd(PathApp.Command("G01", {"X": 1, "Y": 3, "Z": 5}), spt),
             spt,
             Vector(1, 3, 5),
         )
@@ -418,7 +419,7 @@ class TestPathGeom(PathTestBase):
         p2 = Vector(-1, 0, 2)
         self.assertArc(
             Path.Geom.edgeForCmd(
-                Path.Command("G2", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 0, "J": 1, "K": 0}),
+                PathApp.Command("G2", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 0, "J": 1, "K": 0}),
                 p1,
             ),
             p1,
@@ -427,7 +428,7 @@ class TestPathGeom(PathTestBase):
         )
         self.assertArc(
             Path.Geom.edgeForCmd(
-                Path.Command("G3", {"X": p1.x, "Y": p1.y, "z": p1.z, "I": -1, "J": 0, "K": 0}),
+                PathApp.Command("G3", {"X": p1.x, "Y": p1.y, "z": p1.z, "I": -1, "J": 0, "K": 0}),
                 p2,
             ),
             p2,
@@ -442,7 +443,7 @@ class TestPathGeom(PathTestBase):
         p2 = Vector(1, 0, 2)
         self.assertCurve(
             Path.Geom.edgeForCmd(
-                Path.Command("G2", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 0, "J": -1, "K": 1}),
+                PathApp.Command("G2", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 0, "J": -1, "K": 1}),
                 p1,
             ),
             p1,
@@ -453,7 +454,7 @@ class TestPathGeom(PathTestBase):
         p2 = Vector(0, -1, 2)
         self.assertCurve(
             Path.Geom.edgeForCmd(
-                Path.Command("G3", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 1, "J": 0, "K": 1}),
+                PathApp.Command("G3", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 1, "J": 0, "K": 1}),
                 p1,
             ),
             p1,
@@ -466,7 +467,7 @@ class TestPathGeom(PathTestBase):
         p2 = Vector(-1, 0, 0)
         self.assertCurve(
             Path.Geom.edgeForCmd(
-                Path.Command("G2", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 0, "J": 1, "K": -1}),
+                PathApp.Command("G2", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 0, "J": 1, "K": -1}),
                 p1,
             ),
             p1,
@@ -477,7 +478,7 @@ class TestPathGeom(PathTestBase):
         p2 = Vector(0, -1, 0)
         self.assertCurve(
             Path.Geom.edgeForCmd(
-                Path.Command("G3", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 1, "J": 0, "K": -1}),
+                PathApp.Command("G3", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 1, "J": 0, "K": -1}),
                 p1,
             ),
             p1,
@@ -496,7 +497,7 @@ class TestPathGeom(PathTestBase):
             return Path.Geom.cmdsForEdge(Part.Edge(Part.Arc(pa, pb, pc)), flip)[0]
 
         def cmd(g, end, off):
-            return Path.Command(
+            return PathApp.Command(
                 g,
                 {
                     "X": end.x,
@@ -522,7 +523,7 @@ class TestPathGeom(PathTestBase):
             return Path.Geom.cmdsForEdge(Part.Edge(Part.Circle(center, norm, radius)))[0]
 
         def cmd(g, end, off):
-            return Path.Command(
+            return PathApp.Command(
                 g,
                 {
                     "X": end.x,
@@ -552,12 +553,12 @@ class TestPathGeom(PathTestBase):
     def test50(self):
         """Verify proper wire(s) aggregation from a Path."""
         commands = []
-        commands.append(Path.Command("G1", {"X": 1}))
-        commands.append(Path.Command("G1", {"Y": 1}))
-        commands.append(Path.Command("G0", {"X": 0}))
-        commands.append(Path.Command("G1", {"Y": 0}))
+        commands.append(PathApp.Command("G1", {"X": 1}))
+        commands.append(PathApp.Command("G1", {"Y": 1}))
+        commands.append(PathApp.Command("G0", {"X": 0}))
+        commands.append(PathApp.Command("G1", {"Y": 0}))
 
-        wire, rapid = Path.Geom.wireForPath(Path.Path(commands))
+        wire, rapid = Path.Geom.wireForPath(PathApp.Path(commands))
         self.assertEqual(len(wire.Edges), 4)
         self.assertLine(wire.Edges[0], Vector(0, 0, 0), Vector(1, 0, 0))
         self.assertLine(wire.Edges[1], Vector(1, 0, 0), Vector(1, 1, 0))
@@ -566,7 +567,7 @@ class TestPathGeom(PathTestBase):
         self.assertEqual(len(rapid), 1)
         self.assertTrue(Path.Geom.edgesMatch(rapid[0], wire.Edges[2]))
 
-        wires = Path.Geom.wiresForPath(Path.Path(commands))
+        wires = Path.Geom.wiresForPath(PathApp.Path(commands))
         self.assertEqual(len(wires), 2)
         self.assertEqual(len(wires[0].Edges), 2)
         self.assertLine(wires[0].Edges[0], Vector(0, 0, 0), Vector(1, 0, 0))

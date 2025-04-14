@@ -24,6 +24,7 @@
 import FreeCAD
 
 import Path
+import PathApp
 import CAMTests.PathTestUtils as PathTestUtils
 from Path.Post.Processor import PostProcessorFactory
 
@@ -97,7 +98,7 @@ class TestRefactoredCentroidPost(PathTestUtils.PathTestBase):
         nl = "\n"
         self.job.PostProcessorArgs = args
         # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
+        self.profile_op.Path = PathApp.Path(path)
         # the gcode is in the first section for this particular job and operation
         gcode = self.post.export()[0][1]
         if debug:
@@ -110,7 +111,7 @@ class TestRefactoredCentroidPost(PathTestUtils.PathTestBase):
         nl = "\n"
         self.job.PostProcessorArgs = args
         # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
+        self.profile_op.Path = PathApp.Path(path)
         # the gcode is in the first section for this particular job and operation
         gcode = self.post.export()[0][1]
         if debug:
@@ -123,7 +124,7 @@ class TestRefactoredCentroidPost(PathTestUtils.PathTestBase):
         """
         nl = "\n"
 
-        self.profile_op.Path = Path.Path([])
+        self.profile_op.Path = PathApp.Path([])
 
         # Test generating with header
         # Header contains a time stamp that messes up unit testing.
@@ -187,9 +188,9 @@ M99
         """
         nl = "\n"
 
-        c = Path.Command("G0 X10 Y20 Z30")
+        c = PathApp.Command("G0 X10 Y20 Z30")
 
-        self.profile_op.Path = Path.Path([c])
+        self.profile_op.Path = PathApp.Path([c])
 
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
@@ -211,9 +212,9 @@ M99
         """
         nl = "\n"
 
-        c = Path.Command("G0 X10 Y20 Z30")
+        c = PathApp.Command("G0 X10 Y20 Z30")
 
-        self.profile_op.Path = Path.Path([c])
+        self.profile_op.Path = PathApp.Path([c])
 
         self.job.PostProcessorArgs = "--no-header --line-numbers --no-show-editor"
         gcode = self.post.export()[0][1]
@@ -228,7 +229,7 @@ M99
         """
         nl = "\n"
 
-        self.profile_op.Path = Path.Path([])
+        self.profile_op.Path = PathApp.Path([])
 
         self.job.PostProcessorArgs = (
             "--no-header --no-comments --preamble='G18 G55' --no-show-editor"
@@ -244,7 +245,7 @@ M99
         """
         nl = "\n"
 
-        self.profile_op.Path = Path.Path([])
+        self.profile_op.Path = PathApp.Path([])
 
         self.job.PostProcessorArgs = (
             "--no-header --no-comments --postamble='G0 Z50\nM2' --no-show-editor"
@@ -261,9 +262,9 @@ M99
         """
         nl = "\n"
 
-        c = Path.Command("G0 X10 Y20 Z30")
+        c = PathApp.Command("G0 X10 Y20 Z30")
 
-        self.profile_op.Path = Path.Path([c])
+        self.profile_op.Path = PathApp.Path([c])
 
         self.job.PostProcessorArgs = "--no-header --inches --no-show-editor"
         gcode = self.post.export()[0][1]
@@ -288,10 +289,10 @@ M99
         """
         nl = "\n"
 
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
+        c = PathApp.Command("G0 X10 Y20 Z30")
+        c1 = PathApp.Command("G0 X10 Y30 Z30")
 
-        self.profile_op.Path = Path.Path([c, c1])
+        self.profile_op.Path = PathApp.Path([c, c1])
 
         self.job.PostProcessorArgs = "--no-header --modal --no-show-editor"
         gcode = self.post.export()[0][1]
@@ -307,10 +308,10 @@ M99
         """
         nl = "\n"
 
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
+        c = PathApp.Command("G0 X10 Y20 Z30")
+        c1 = PathApp.Command("G0 X10 Y30 Z30")
 
-        self.profile_op.Path = Path.Path([c, c1])
+        self.profile_op.Path = PathApp.Path([c, c1])
 
         self.job.PostProcessorArgs = "--no-header --axis-modal --no-show-editor"
         gcode = self.post.export()[0][1]
@@ -325,10 +326,10 @@ M99
         """
         nl = "\n"
 
-        c = Path.Command("M6 T2")
-        c2 = Path.Command("M3 S3000")
+        c = PathApp.Command("M6 T2")
+        c2 = PathApp.Command("M3 S3000")
 
-        self.profile_op.Path = Path.Path([c, c2])
+        self.profile_op.Path = PathApp.Path([c, c2])
 
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
@@ -348,9 +349,9 @@ M99
         """
         nl = "\n"
 
-        c = Path.Command("(comment)")
+        c = PathApp.Command("(comment)")
 
-        self.profile_op.Path = Path.Path([c])
+        self.profile_op.Path = PathApp.Path([c])
 
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]

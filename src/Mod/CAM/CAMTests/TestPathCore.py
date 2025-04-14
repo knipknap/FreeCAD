@@ -22,6 +22,7 @@
 
 import FreeCAD
 import Path
+import PathApp
 from CAMTests.PathTestUtils import PathTestBase
 
 
@@ -29,8 +30,8 @@ class TestPathCore(PathTestBase):
     def test00(self):
         """Test Path command core functionality"""
         # create empty command
-        c = Path.Command()
-        self.assertIsInstance(c, Path.Command)
+        c = PathApp.Command()
+        self.assertIsInstance(c, PathApp.Command)
 
         # change name
         c.Name = "G1"
@@ -48,13 +49,13 @@ class TestPathCore(PathTestBase):
         self.assertEqual(c.toGCode(), "G1 X1.000000 Y0.500000")
 
         # create and assign name in one
-        c2 = Path.Command("G2")
+        c2 = PathApp.Command("G2")
         self.assertEqual(c2.Name, "G2")
 
         # Create Path and parameters in one
-        c3 = Path.Command("G1", {"X": 34, "Y": 1.2})
+        c3 = PathApp.Command("G1", {"X": 34, "Y": 1.2})
         self.assertEqual(str(c3), "Command G1 [ X:34 Y:1.2 ]")
-        c4 = Path.Command("G1X4Y5")
+        c4 = PathApp.Command("G1X4Y5")
         self.assertEqual(str(c4), "Command G1 [ X:4 Y:5 ]")
 
         # use placement
@@ -63,7 +64,7 @@ class TestPathCore(PathTestBase):
         p1 = FreeCAD.Placement()
         p1.Base = FreeCAD.Vector(3, 2, 1)
         self.assertEqual(str(p1), "Placement [Pos=(3,2,1), Yaw-Pitch-Roll=(0,0,0)]")
-        c5 = Path.Command("g1", p1)
+        c5 = PathApp.Command("g1", p1)
         self.assertEqual(str(c5), "Command G1 [ X:3 Y:2 Z:1 ]")
         p2 = FreeCAD.Placement()
         p2.Base = FreeCAD.Vector(5, 0, 0)
@@ -86,9 +87,9 @@ class TestPathCore(PathTestBase):
     def test10(self):
         """Test Path Object core functionality"""
 
-        c1 = Path.Command("g1", {"x": 1, "y": 0})
-        c2 = Path.Command("g1", {"x": 0, "y": 2})
-        p = Path.Path([c1, c2])
+        c1 = PathApp.Command("g1", {"x": 1, "y": 0})
+        c2 = PathApp.Command("g1", {"x": 0, "y": 2})
+        p = PathApp.Path([c1, c2])
         self.assertAlmostEqual(str(p), "Path [ size:2 length:3.2361 ]", places=4)
 
         self.assertEqual(str(p.Commands), "[Command G1 [ X:1 Y:0 ], Command G1 [ X:0 Y:2 ]]")
@@ -122,15 +123,15 @@ G0 Z0.500000
 """
 
         # create a path directly form a piece of gcode.
-        p = Path.Path()
+        p = PathApp.Path()
         p.setFromGCode(lines)
         self.assertEqual(p.toGCode(), output)
 
     def test50(self):
         """Test Path.Length calculation"""
         commands = []
-        commands.append(Path.Command("G1", {"X": 1}))
-        commands.append(Path.Command("G1", {"Y": 1}))
-        path = Path.Path(commands)
+        commands.append(PathApp.Command("G1", {"X": 1}))
+        commands.append(PathApp.Command("G1", {"Y": 1}))
+        path = PathApp.Path(commands)
 
         self.assertEqual(path.Length, 2)

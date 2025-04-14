@@ -26,6 +26,7 @@ from Path.Post.Processor import PostProcessor, PostProcessorFactory
 from unittest.mock import patch, MagicMock
 import FreeCAD
 import Path
+import PathApp
 import Path.Post.Command as PathCommand
 import Path.Post.Processor as PathPost
 import Path.Post.Utils as PostUtils
@@ -576,18 +577,18 @@ class TestPathPostUtils(unittest.TestCase):
     def test010(self):
         """Test the utility functions in the PostUtils.py file."""
         commands = [
-            Path.Command("G1 X-7.5 Y5.0 Z0.0"),
-            Path.Command("G2 I2.5 J0.0 K0.0 X-5.0 Y7.5 Z0.0"),
-            Path.Command("G1 X5.0 Y7.5 Z0.0"),
-            Path.Command("G2 I0.0 J-2.5 K0.0 X7.5 Y5.0 Z0.0"),
-            Path.Command("G1 X7.5 Y-5.0 Z0.0"),
-            Path.Command("G2 I-2.5 J0.0 K0.0 X5.0 Y-7.5 Z0.0"),
-            Path.Command("G1 X-5.0 Y-7.5 Z0.0"),
-            Path.Command("G2 I0.0 J2.5 K0.0 X-7.5 Y-5.0 Z0.0"),
-            Path.Command("G1 X-7.5 Y0.0 Z0.0"),
+            PathApp.Command("G1 X-7.5 Y5.0 Z0.0"),
+            PathApp.Command("G2 I2.5 J0.0 K0.0 X-5.0 Y7.5 Z0.0"),
+            PathApp.Command("G1 X5.0 Y7.5 Z0.0"),
+            PathApp.Command("G2 I0.0 J-2.5 K0.0 X7.5 Y5.0 Z0.0"),
+            PathApp.Command("G1 X7.5 Y-5.0 Z0.0"),
+            PathApp.Command("G2 I-2.5 J0.0 K0.0 X5.0 Y-7.5 Z0.0"),
+            PathApp.Command("G1 X-5.0 Y-7.5 Z0.0"),
+            PathApp.Command("G2 I0.0 J2.5 K0.0 X-7.5 Y-5.0 Z0.0"),
+            PathApp.Command("G1 X-7.5 Y0.0 Z0.0"),
         ]
 
-        testpath = Path.Path(commands)
+        testpath = PathApp.Path(commands)
         self.assertTrue(len(testpath.Commands) == 9)
         self.assertTrue(len([c for c in testpath.Commands if c.Name in ["G2", "G3"]]) == 4)
 

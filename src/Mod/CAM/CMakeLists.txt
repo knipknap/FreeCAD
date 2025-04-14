@@ -119,6 +119,11 @@ SET(PathPythonTools_SRCS
     Path/Tool/Controller.py
 )
 
+SET(PathPythonToolGui_SRCS
+    Path/Tool/Gui/__init__.py
+    Path/Tool/Gui/Controller.py
+)
+
 set(PathBitLibrary_Python_SRCS
     Path/BitLibrary/__init__.py
     Path/BitLibrary/cli.py
@@ -442,6 +447,7 @@ SET(all_files
     ${PathPythonPost_SRCS}
     ${PathPythonPostScripts_SRCS}
     ${PathPythonTools_SRCS}
+    ${PathPythonToolGui_SRCS}
     ${PathBitLibrary_Python_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
@@ -562,6 +568,13 @@ INSTALL(
         ${PathPythonPostScripts_SRCS}
     DESTINATION
         Mod/CAM/Path/Post/scripts
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolGui_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/Gui
 )
 
 INSTALL(

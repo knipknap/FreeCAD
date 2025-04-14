@@ -24,6 +24,7 @@
 import FreeCAD
 
 import Path
+import PathApp
 import CAMTests.PathTestUtils as PathTestUtils
 from Path.Post.Processor import PostProcessorFactory
 
@@ -98,7 +99,7 @@ class TestRefactoredTestPostMCodes(PathTestUtils.PathTestBase):
         nl = "\n"
         self.job.PostProcessorArgs = args
         # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
+        self.profile_op.Path = PathApp.Path(path)
         # the gcode is in the first section for this particular job and operation
         gcode = self.post.export()[0][1]
         if debug:

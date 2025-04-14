@@ -24,6 +24,7 @@
 import FreeCAD
 
 import Path
+import PathApp
 import CAMTests.PathTestUtils as PathTestUtils
 from Path.Post.Processor import PostProcessorFactory
 
@@ -98,7 +99,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         nl = "\n"
         self.job.PostProcessorArgs = args
         # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
+        self.profile_op.Path = PathApp.Path(path)
         # the gcode is in the first section for this particular job and operation
         gcode = self.post.export()[0][1]
         if debug:
@@ -111,7 +112,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         nl = "\n"
         self.job.PostProcessorArgs = args
         # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
+        self.profile_op.Path = PathApp.Path(path)
         # the gcode is in the first section for this particular job and operation
         gcode = self.post.export()[0][1]
         if debug:
@@ -351,7 +352,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         """Test G20 command Generation."""
         # for some reason, Path.Path("G20") doesn't do the same thing
         # as Path.Path([Path.Command("G20")])
-        self.single_compare([Path.Command("G20")], "G20", "")
+        self.single_compare([PathApp.Command("G20")], "G20", "")
 
     #############################################################################
 
@@ -359,7 +360,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         """Test G21 command Generation."""
         # for some reason, Path.Path("G21") doesn't do the same thing
         # as Path.Path([Path.Command("G21")])
-        self.single_compare([Path.Command("G21")], "G21", "")
+        self.single_compare([PathApp.Command("G21")], "G21", "")
 
     #############################################################################
 
@@ -713,13 +714,13 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
     def test10730(self):
         """Test G73 command Generation."""
         path = [
-            Path.Command("G0 X1 Y2"),
-            Path.Command("G0 Z8"),
-            Path.Command("G90"),
-            Path.Command("G99"),
-            Path.Command("G73 X1 Y2 Z0 F123 Q1.5 R5"),
-            Path.Command("G80"),
-            Path.Command("G90"),
+            PathApp.Command("G0 X1 Y2"),
+            PathApp.Command("G0 Z8"),
+            PathApp.Command("G90"),
+            PathApp.Command("G99"),
+            PathApp.Command("G73 X1 Y2 Z0 F123 Q1.5 R5"),
+            PathApp.Command("G80"),
+            PathApp.Command("G90"),
         ]
         self.multi_compare(
             path,
@@ -810,13 +811,13 @@ G90
         # Test translate_drill with G73 and G91.
         #
         path = [
-            Path.Command("G0 X1 Y2"),
-            Path.Command("G0 Z8"),
-            Path.Command("G91"),
-            Path.Command("G99"),
-            Path.Command("G73 X1 Y2 Z0 F123 Q1.5 R5"),
-            Path.Command("G80"),
-            Path.Command("G90"),
+            PathApp.Command("G0 X1 Y2"),
+            PathApp.Command("G0 Z8"),
+            PathApp.Command("G91"),
+            PathApp.Command("G99"),
+            PathApp.Command("G73 X1 Y2 Z0 F123 Q1.5 R5"),
+            PathApp.Command("G80"),
+            PathApp.Command("G90"),
         ]
         self.multi_compare(
             path,
@@ -909,13 +910,13 @@ G90
     def test10810(self):
         """Test G81 command Generation."""
         path = [
-            Path.Command("G0 X1 Y2"),
-            Path.Command("G0 Z8"),
-            Path.Command("G90"),
-            Path.Command("G99"),
-            Path.Command("G81 X1 Y2 Z0 F123 R5"),
-            Path.Command("G80"),
-            Path.Command("G90"),
+            PathApp.Command("G0 X1 Y2"),
+            PathApp.Command("G0 Z8"),
+            PathApp.Command("G90"),
+            PathApp.Command("G99"),
+            PathApp.Command("G81 X1 Y2 Z0 F123 R5"),
+            PathApp.Command("G80"),
+            PathApp.Command("G90"),
         ]
         self.multi_compare(
             path,
@@ -988,13 +989,13 @@ G90
         # Test translate_drill with G81 and G91.
         #
         path = [
-            Path.Command("G0 X1 Y2"),
-            Path.Command("G0 Z8"),
-            Path.Command("G91"),
-            Path.Command("G99"),
-            Path.Command("G81 X1 Y2 Z0 F123 R5"),
-            Path.Command("G80"),
-            Path.Command("G90"),
+            PathApp.Command("G0 X1 Y2"),
+            PathApp.Command("G0 Z8"),
+            PathApp.Command("G91"),
+            PathApp.Command("G99"),
+            PathApp.Command("G81 X1 Y2 Z0 F123 R5"),
+            PathApp.Command("G80"),
+            PathApp.Command("G90"),
         ]
         self.multi_compare(
             path,
@@ -1069,13 +1070,13 @@ G90
     def test10820(self):
         """Test G82 command Generation."""
         path = [
-            Path.Command("G0 X1 Y2"),
-            Path.Command("G0 Z8"),
-            Path.Command("G90"),
-            Path.Command("G99"),
-            Path.Command("G82 X1 Y2 Z0 F123 R5 P1.23456"),
-            Path.Command("G80"),
-            Path.Command("G90"),
+            PathApp.Command("G0 X1 Y2"),
+            PathApp.Command("G0 Z8"),
+            PathApp.Command("G90"),
+            PathApp.Command("G99"),
+            PathApp.Command("G82 X1 Y2 Z0 F123 R5 P1.23456"),
+            PathApp.Command("G80"),
+            PathApp.Command("G90"),
         ]
         self.multi_compare(
             path,
@@ -1150,13 +1151,13 @@ G90
         # Test translate_drill with G82 and G91.
         #
         path = [
-            Path.Command("G0 X1 Y2"),
-            Path.Command("G0 Z8"),
-            Path.Command("G91"),
-            Path.Command("G99"),
-            Path.Command("G82 X1 Y2 Z0 F123 R5 P1.23456"),
-            Path.Command("G80"),
-            Path.Command("G90"),
+            PathApp.Command("G0 X1 Y2"),
+            PathApp.Command("G0 Z8"),
+            PathApp.Command("G91"),
+            PathApp.Command("G99"),
+            PathApp.Command("G82 X1 Y2 Z0 F123 R5 P1.23456"),
+            PathApp.Command("G80"),
+            PathApp.Command("G90"),
         ]
         self.multi_compare(
             path,
@@ -1233,13 +1234,13 @@ G90
     def test10830(self):
         """Test G83 command Generation."""
         path = [
-            Path.Command("G0 X1 Y2"),
-            Path.Command("G0 Z8"),
-            Path.Command("G90"),
-            Path.Command("G99"),
-            Path.Command("G83 X1 Y2 Z0 F123 Q1.5 R5"),
-            Path.Command("G80"),
-            Path.Command("G90"),
+            PathApp.Command("G0 X1 Y2"),
+            PathApp.Command("G0 Z8"),
+            PathApp.Command("G90"),
+            PathApp.Command("G99"),
+            PathApp.Command("G83 X1 Y2 Z0 F123 Q1.5 R5"),
+            PathApp.Command("G80"),
+            PathApp.Command("G90"),
         ]
         self.multi_compare(
             path,
@@ -1330,13 +1331,13 @@ G90
         # Test translate_drill with G83 and G91.
         #
         path = [
-            Path.Command("G0 X1 Y2"),
-            Path.Command("G0 Z8"),
-            Path.Command("G91"),
-            Path.Command("G99"),
-            Path.Command("G83 X1 Y2 Z0 F123 Q1.5 R5"),
-            Path.Command("G80"),
-            Path.Command("G90"),
+            PathApp.Command("G0 X1 Y2"),
+            PathApp.Command("G0 Z8"),
+            PathApp.Command("G91"),
+            PathApp.Command("G99"),
+            PathApp.Command("G83 X1 Y2 Z0 F123 Q1.5 R5"),
+            PathApp.Command("G80"),
+            PathApp.Command("G90"),
         ]
         self.multi_compare(
             path,
@@ -1784,9 +1785,9 @@ G90
             # test using all possible axes, all same, then all changing
             (
                 [
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 X20 Y30 Z10 A70 B80 C90 U40 V50 W60 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X20 Y30 Z10 A70 B80 C90 U40 V50 W60 F1.23456"),
                 ],
                 """G90
 G21
@@ -1808,8 +1809,8 @@ G1 X0.7874 Y1.1811 Z0.3937 A70.0000 B80.0000 C90.0000 U1.5748 V1.9685 W2.3622 F2
             # test using all possible axes, just X changing
             (
                 [
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 X20 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X20 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
                 ],
                 """G90
 G21
@@ -1829,8 +1830,8 @@ G1 X0.7874 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2
             # test using all possible axes, just Y changing
             (
                 [
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 X10 Y30 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y30 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
                 ],
                 """G90
 G21
@@ -1850,8 +1851,8 @@ G1 X0.3937 Y1.1811 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2
             # test using all possible axes, just Z changing
             (
                 [
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 X10 Y20 Z10 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z10 A40 B50 C60 U70 V80 W90 F1.23456"),
                 ],
                 """G90
 G21
@@ -1871,8 +1872,8 @@ G1 X0.3937 Y0.7874 Z0.3937 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2
             # test using all possible axes, just A changing
             (
                 [
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 X10 Y20 Z30 A70 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A70 B50 C60 U70 V80 W90 F1.23456"),
                 ],
                 """G90
 G21
@@ -1892,8 +1893,8 @@ G1 X0.3937 Y0.7874 Z1.1811 A70.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F7
             # test using all possible axes, just B changing
             (
                 [
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 X10 Y20 Z30 A40 B80 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B80 C60 U70 V80 W90 F1.23456"),
                 ],
                 """G90
 G21
@@ -1913,8 +1914,8 @@ G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B80.0000 C60.0000 U2.7559 V3.1496 W3.5433 F7
             # test using all possible axes, just C changing
             (
                 [
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C90 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C90 U70 V80 W90 F1.23456"),
                 ],
                 """G90
 G21
@@ -1934,8 +1935,8 @@ G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C90.0000 U2.7559 V3.1496 W3.5433 F7
             # test using all possible axes, just U changing
             (
                 [
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U40 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U40 V80 W90 F1.23456"),
                 ],
                 """G90
 G21
@@ -1955,8 +1956,8 @@ G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U1.5748 V3.1496 W3.5433 F2
             # test using all possible axes, just V changing
             (
                 [
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V50 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V50 W90 F1.23456"),
                 ],
                 """G90
 G21
@@ -1976,8 +1977,8 @@ G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V1.9685 W3.5433 F2
             # test using all possible axes, just W changing
             (
                 [
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W60 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W60 F1.23456"),
                 ],
                 """G90
 G21
@@ -1997,9 +1998,9 @@ G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W2.3622 F2
             # test using just XYZ, all same, then all changing
             (
                 [
-                    Path.Command("G1 X10 Y20 Z30 F1.23456"),
-                    Path.Command("G1 X10 Y20 Z30 F1.23456"),
-                    Path.Command("G1 X20 Y30 Z10 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 F1.23456"),
+                    PathApp.Command("G1 X20 Y30 Z10 F1.23456"),
                 ],
                 """G90
 G21
@@ -2021,9 +2022,9 @@ G1 X0.7874 Y1.1811 Z0.3937 F2.9163
             # test using just UVW, all same, then all changing
             (
                 [
-                    Path.Command("G1 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 U40 V50 W60 F1.23456"),
+                    PathApp.Command("G1 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 U40 V50 W60 F1.23456"),
                 ],
                 """G90
 G21
@@ -2045,9 +2046,9 @@ G1 U1.5748 V1.9685 W2.3622 F2.9163
             # test using just ABC, which should not convert the feed rate for --inches
             (
                 [
-                    Path.Command("G1 A40 B50 C60 F1.23456"),
-                    Path.Command("G1 A40 B50 C60 F1.23456"),
-                    Path.Command("G1 A70 B80 C90 F1.23456"),
+                    PathApp.Command("G1 A40 B50 C60 F1.23456"),
+                    PathApp.Command("G1 A40 B50 C60 F1.23456"),
+                    PathApp.Command("G1 A70 B80 C90 F1.23456"),
                 ],
                 """G90
 G21
@@ -2069,9 +2070,9 @@ G1 A70.0000 B80.0000 C90.0000 F74.0736
             # test using XYZ and ABC, all same, then all changing
             (
                 [
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 F1.23456"),
-                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 F1.23456"),
-                    Path.Command("G1 X20 Y30 Z10 A70 B80 C90 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 F1.23456"),
+                    PathApp.Command("G1 X10 Y20 Z30 A40 B50 C60 F1.23456"),
+                    PathApp.Command("G1 X20 Y30 Z10 A70 B80 C90 F1.23456"),
                 ],
                 """G90
 G21
@@ -2093,9 +2094,9 @@ G1 X0.7874 Y1.1811 Z0.3937 A70.0000 B80.0000 C90.0000 F2.9163
             # test using ABC and UVW, all same, then all changing
             (
                 [
-                    Path.Command("G1 A40 B50 C60 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 A40 B50 C60 U70 V80 W90 F1.23456"),
-                    Path.Command("G1 A70 B80 C90 U40 V50 W60 F1.23456"),
+                    PathApp.Command("G1 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    PathApp.Command("G1 A70 B80 C90 U40 V50 W60 F1.23456"),
                 ],
                 """G90
 G21
@@ -2117,9 +2118,9 @@ G1 A70.0000 B80.0000 C90.0000 U1.5748 V1.9685 W2.3622 F2.9163
             # test using X and A only, both same, then both changing
             (
                 [
-                    Path.Command("G1 X10 A40 F1.23456"),
-                    Path.Command("G1 X10 A40 F1.23456"),
-                    Path.Command("G1 X20 A70 F1.23456"),
+                    PathApp.Command("G1 X10 A40 F1.23456"),
+                    PathApp.Command("G1 X10 A40 F1.23456"),
+                    PathApp.Command("G1 X20 A70 F1.23456"),
                 ],
                 """G90
 G21
@@ -2141,9 +2142,9 @@ G1 X0.7874 A70.0000 F2.9163
             # test using A and U only, both same, then both changing
             (
                 [
-                    Path.Command("G1 A40 U70 F1.23456"),
-                    Path.Command("G1 A40 U70 F1.23456"),
-                    Path.Command("G1 A70 U40 F1.23456"),
+                    PathApp.Command("G1 A40 U70 F1.23456"),
+                    PathApp.Command("G1 A40 U70 F1.23456"),
+                    PathApp.Command("G1 A70 U40 F1.23456"),
                 ],
                 """G90
 G21
@@ -2165,9 +2166,9 @@ G1 A70.0000 U1.5748 F2.9163
             # test using A only, which should not convert the feed rate for --inches
             (
                 [
-                    Path.Command("G1 A40 F1.23456"),
-                    Path.Command("G1 A40 F1.23456"),
-                    Path.Command("G1 A70 F1.23456"),
+                    PathApp.Command("G1 A40 F1.23456"),
+                    PathApp.Command("G1 A40 F1.23456"),
+                    PathApp.Command("G1 A70 F1.23456"),
                 ],
                 """G90
 G21

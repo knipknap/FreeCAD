@@ -25,6 +25,7 @@ import FreeCAD
 from FreeCAD import Vector
 from PySide import QtCore
 import Path
+import PathApp
 import Path.Main.Job as PathJob
 import math
 from numpy import linspace
@@ -882,6 +883,6 @@ def applyPlacementToPath(placement, path):
 
             cmd.Parameters = params
         commands.append(cmd.transform(placement))
-    newPath = Path.Path(commands)
+    newPath = PathApp.Path(commands)
 
     return newPath

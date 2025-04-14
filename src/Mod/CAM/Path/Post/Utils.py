@@ -33,6 +33,7 @@ from PySide import QtCore, QtGui
 import FreeCAD
 import Part
 import Path
+import PathApp
 import os
 import re
 
@@ -339,7 +340,7 @@ def splitArcs(path):
     deflection = prefGrp.GetFloat("LibAreaCurveAccuarcy", 0.01)
 
     results = []
-    if not isinstance(path, Path.Path):
+    if not isinstance(path, PathApp.Path):
         raise TypeError("path must be a Path object")
 
     machine = MachineState()
@@ -358,4 +359,4 @@ def splitArcs(path):
 
         machine.addCommand(command)
 
-    return Path.Path(results)
+    return PathApp.Path(results)

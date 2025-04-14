@@ -118,17 +118,6 @@ def _findRelativePath(path, typ):
     return relative
 
 
-# Unused due to bug fix related to relative paths
-"""
-def findRelativePathShape(path):
-    return _findRelativePath(path, 'Shape')
-
-
-def findRelativePathTool(path):
-    return _findRelativePath(path, 'Bit')
-"""
-
-
 def findRelativePathLibrary(path):
     return _findRelativePath(path, "Library")
 

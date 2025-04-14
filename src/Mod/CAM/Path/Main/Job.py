@@ -25,6 +25,7 @@ from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import PathApp
 import Path.Base.SetupSheet as PathSetupSheet
 import Path.Base.Util as PathUtil
 import Path.Main.Stock as PathStock
@@ -469,7 +470,7 @@ class ObjectJob:
         obj.setEditorMode("Placement", 2)
 
         if hasattr(obj, "Path"):
-            obj.Path = Path.Path()
+            obj.Path = PathApp.Path()
 
         if not hasattr(obj, "CycleTime"):
             obj.addProperty(
