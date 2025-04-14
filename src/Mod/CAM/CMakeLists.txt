@@ -119,11 +119,10 @@ SET(PathPythonTools_SRCS
     Path/Tool/Controller.py
 )
 
-# Define BitLibrary Python source files
 set(PathBitLibrary_Python_SRCS
     Path/BitLibrary/__init__.py
     Path/BitLibrary/cli.py
-    Path/BitLibrary/Commands.py # Added command file
+    Path/BitLibrary/Commands.py
     Path/BitLibrary/const.py
     Path/BitLibrary/db.py
     Path/BitLibrary/fcutil.py
@@ -132,7 +131,6 @@ set(PathBitLibrary_Python_SRCS
     Path/BitLibrary/library.py
     Path/BitLibrary/machine.py
     Path/BitLibrary/params.py
-    # Removed Path/BitLibrary/qbtl.py
     Path/BitLibrary/shape.py
     Path/BitLibrary/tool.py
     Path/BitLibrary/toolmaterial.py
@@ -170,7 +168,6 @@ set(PathBitLibrary_Python_SRCS
     Path/BitLibrary/ui/util.py
 )
 
-# Define BitLibrary Icon files
 file(GLOB_RECURSE PathBitLibrary_ICON_FILES FOLLOW_SYMLINKS
     Path/BitLibrary/resources/icons/*.svg
 )
@@ -446,7 +443,6 @@ SET(all_files
     ${PathPythonPostScripts_SRCS}
     ${PathPythonTools_SRCS}
     ${PathBitLibrary_Python_SRCS}
-    # Removed ${PathBitLibrary_UI_PYTHON_SRCS} from all_files
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -575,22 +571,18 @@ INSTALL(
         Mod/CAM/Path/Tool
 )
 
-# Install BitLibrary Python files (including generated UI modules if qt_wrap_ui was used)
 INSTALL(
     FILES
         ${PathBitLibrary_Python_SRCS}
-        # ${PathBitLibrary_UI_PYTHON_SRCS} # Not needed if UI files loaded dynamically
     DESTINATION
         Mod/CAM/Path/BitLibrary
-    # Add specific subdirectories if needed, e.g., for feeds, serializers, ui
-    # This might require splitting PathBitLibrary_Python_SRCS or using DIRECTORY install
 )
 
 INSTALL(
     FILES
         ${PathBitLibrary_ICON_FILES}
     DESTINATION
-        Mod/CAM/Path/BitLibrary/icons # Install locally for now
+        Mod/CAM/Path/BitLibrary/icons
 )
 
 INSTALL(
