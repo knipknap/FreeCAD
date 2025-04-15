@@ -142,17 +142,26 @@ set(PathBitLibrary_Python_SRCS
     Path/BitLibrary/toolpixmap.py
     Path/BitLibrary/units.py
     Path/BitLibrary/util.py
+)
+
+SET(PathBitLibraryFeeds_SRCS
     Path/BitLibrary/feeds/__init__.py
     Path/BitLibrary/feeds/calc.py
     Path/BitLibrary/feeds/material.py
     Path/BitLibrary/feeds/operation.py
     Path/BitLibrary/feeds/util.py
+)
+
+SET(PathBitLibrarySerializers_SRCS
     Path/BitLibrary/serializers/__init__.py
     Path/BitLibrary/serializers/camoticsserializer.py
     Path/BitLibrary/serializers/fcserializer.py
     Path/BitLibrary/serializers/fusionserializer.py
     Path/BitLibrary/serializers/linuxcncserializer.py
     Path/BitLibrary/serializers/serializer.py
+)
+
+SET(PathBitLibraryUi_SRCS
     Path/BitLibrary/ui/init.py
     Path/BitLibrary/ui/curve.py
     Path/BitLibrary/ui/feedsandspeeds.py
@@ -175,6 +184,11 @@ set(PathBitLibrary_Python_SRCS
 
 file(GLOB_RECURSE PathBitLibrary_ICON_FILES FOLLOW_SYMLINKS
     Path/BitLibrary/resources/icons/*.svg
+)
+
+SET(PathBitLibraryTranslations_SRCS
+    Path/BitLibrary/resources/translations/btl_de.qm
+    Path/BitLibrary/resources/translations/btl_pt-BR.qm
 )
 
 SET(PathPythonPost_SRCS
@@ -331,7 +345,6 @@ SET(Tools_Library_SRCS
     Tools/Library/Default.fctl
 )
 
-# Automatically find all shape and icon files in the Tools/Shape directory
 file(GLOB Tools_Shape_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "Tools/Shape/*.fcstd"
     "Tools/Shape/*.svg"
@@ -593,9 +606,37 @@ INSTALL(
 
 INSTALL(
     FILES
+        ${PathBitLibraryFeeds_SRCS}
+    DESTINATION
+        Mod/CAM/Path/BitLibrary/feeds
+)
+
+INSTALL(
+    FILES
+        ${PathBitLibrarySerializers_SRCS}
+    DESTINATION
+        Mod/CAM/Path/BitLibrary/serializers
+)
+
+INSTALL(
+    FILES
+        ${PathBitLibraryUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/BitLibrary/ui
+)
+
+INSTALL(
+    FILES
         ${PathBitLibrary_ICON_FILES}
     DESTINATION
-        Mod/CAM/Path/BitLibrary/icons
+        Mod/CAM/Path/BitLibrary/resources/icons
+)
+
+INSTALL(
+    FILES
+        ${PathBitLibraryTranslations_SRCS}
+    DESTINATION
+        Mod/CAM/Path/BitLibrary/resources/translations
 )
 
 INSTALL(
