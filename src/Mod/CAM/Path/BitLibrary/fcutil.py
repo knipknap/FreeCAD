@@ -179,7 +179,7 @@ def get_active_job():
         return jobs[0]
     return get_selected_job()
 
-def add_tool_to_job(job, tool, pocket):
+def add_tool_to_job(job, bitlib_tool, pocket):
     try:
         import FreeCAD
         import FreeCADGui
@@ -187,23 +187,50 @@ def add_tool_to_job(job, tool, pocket):
     except ImportError:
         raise RuntimeError('Error: Could not access Path workbench, is it loaded?')
 
-    label = tool.get_label()
-    if not tool.filename:
-        err = 'Error: Tool "{}" ({}) has no filename.'.format(label, repr(tool.id))
-        raise ValueError(err)
+    label = bitlib_tool.get_label()
+    fctb_path = bitlib_tool.filename
 
-    doc = FreeCAD.activeDocument()
-    doc.openTransaction("Add tool {}".format(label))
+    if not fctb_path or not os.path.exists(fctb_path):
+        # Attempt to find the file if the path isn't absolute/valid
+        found_path = Bit.findToolBit(fctb_path) # Use Bit module to find the tool file
+        if not found_path:
+             err = f'Error: Tool file "{fctb_path}" for "{label}" not found.'
+             raise ValueError(err)
+        fctb_path = found_path # Use the found absolute path
+
+    active_doc = FreeCAD.activeDocument()
+    if not active_doc:
+        raise RuntimeError("No active document found.")
+    if job.Document != active_doc:
+        raise RuntimeError(f"Job '{job.Label}' is not in the active document.")
+
+    active_doc.openTransaction("Add tool {}".format(label))
     try:
-        toolcontroller = Controller.Create(name="TC: {}".format(label), tool_id=tool.id, toolNumber=pocket)
+        # Create the FreeCAD Path::Tool object from the .fctb file using the Factory
+        # This adds the object to the active_doc
+        fc_tool_obj = Bit.Factory.CreateFrom(fctb_path, name=label)
+        if not fc_tool_obj:
+            raise RuntimeError(f"Failed to create FreeCAD tool object from {fctb_path}")
+
+        # Ensure the created tool object has the correct label if Factory didn't set it
+        if fc_tool_obj.Label != label:
+             fc_tool_obj.Label = label
+
+        # Create the ToolController using the *converted* FreeCAD tool object
+        toolcontroller = Controller.Create(name="TC: {}".format(label), tool=fc_tool_obj, toolNumber=pocket)
         job.Proxy.addToolController(toolcontroller)
+
     except Exception:
-        doc.abortTransaction()
+        active_doc.abortTransaction()
         raise
     else:
-        doc.commitTransaction()
+        active_doc.commitTransaction()
 
-    FreeCADGui.Selection.addSelection(doc.Name, toolcontroller.Name)
+    # Ensure the created tool bit object is hidden
+    if fc_tool_obj and fc_tool_obj.ViewObject:
+        fc_tool_obj.ViewObject.Visibility = False
+
+    FreeCADGui.Selection.addSelection(active_doc.Name, toolcontroller.Name)
 
 # Find the body with the given label in the document
 def _find_body_from_label(doc, label):
