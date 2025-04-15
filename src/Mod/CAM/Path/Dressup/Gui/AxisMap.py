@@ -22,6 +22,7 @@
 
 import FreeCAD
 import Path
+import PathApp
 import math
 import Path.Base.Gui.Util as PathGuiUtil
 import PathScripts.PathUtils as PathUtils
@@ -140,7 +141,7 @@ class ObjectDressup:
                                 newcommandlist.append(c)
                                 currLocation.update(c.Parameters)
 
-                        path = Path.Path(newcommandlist)
+                        path = PathApp.Path(newcommandlist)
                         path.Center = self.center(obj)
                         obj.Path = path
 

@@ -27,6 +27,7 @@ This is an preprocessor to read gcode files produced from slic3r.
 
 import os
 import Path
+import PathApp
 import FreeCAD
 from builtins import open as pyopen
 
@@ -46,7 +47,7 @@ def insert(filename, docname):
     gcode = parse(gcode)
     doc = FreeCAD.getDocument(docname)
     obj = doc.addObject("Path::Feature", "Path")
-    path = Path.Path(gcode)
+    path = PathApp.Path(gcode)
     obj.Path = path
 
 

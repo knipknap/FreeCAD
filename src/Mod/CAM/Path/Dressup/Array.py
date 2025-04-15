@@ -23,6 +23,7 @@
 
 import FreeCAD
 import Path
+import PathApp
 import PathScripts.PathUtils as PathUtils
 from Path.Dressup.Base import DressupBase
 import random
@@ -187,7 +188,7 @@ class DressupArray(DressupBase):
         # Do not generate paths and clear current Path data if operation not active
         if not obj.Active:
             if obj.Path:
-                obj.Path = Path.Path()
+                obj.Path = PathApp.Path()
             return
 
         # use seed if specified, otherwise default to object name for consistency during recomputes
@@ -284,7 +285,7 @@ class PathArray:
 
                 pl = FreeCAD.Placement()
                 pl.move(pos)
-                np = Path.Path(
+                np = PathApp.Path(
                     [cm.transform(pl) for cm in PathUtils.getPathWithPlacement(base).Commands]
                 )
 
@@ -312,7 +313,7 @@ class PathArray:
                         # do not process the index 0,0. It will be processed by the base Paths themselves
                         if not (i == 0 and j == 0):
                             pl.move(pos)
-                            np = Path.Path(
+                            np = PathApp.Path(
                                 [
                                     cm.transform(pl)
                                     for cm in PathUtils.getPathWithPlacement(base).Commands
@@ -340,7 +341,7 @@ class PathArray:
                         # do not process the index 0,0. It will be processed by the base Paths themselves
                         if not (i == 0 and j == 0):
                             pl.move(pos)
-                            np = Path.Path(
+                            np = PathApp.Path(
                                 [
                                     cm.transform(pl)
                                     for cm in PathUtils.getPathWithPlacement(base).Commands
@@ -360,7 +361,7 @@ class PathArray:
                 output += np.toGCode()
 
         # return output
-        return Path.Path(output)
+        return PathApp.Path(output)
 
 
 def Create(base, name="DressupArray"):

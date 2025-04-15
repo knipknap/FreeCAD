@@ -25,6 +25,7 @@ from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import PathApp
 import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
 import math
@@ -982,7 +983,7 @@ class ObjectDressup(object):
                 commands.append(thisCommand)
         # for cmd in commands:
         #    Path.Log.debug("cmd = '%s'" % cmd)
-        path = Path.Path(commands)
+        path = PathApp.Path(commands)
         obj.Path = path
 
     def setup(self, obj, initial):

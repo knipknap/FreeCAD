@@ -22,6 +22,7 @@
 
 import FreeCAD
 import Path
+import PathApp
 import Path.Base.Gui.Util as PathGuiUtil
 from PySide import QtCore
 import math
@@ -473,7 +474,7 @@ class ObjectDressup:
                     continue
 
             commands = newpath
-            path = Path.Path(commands)
+            path = PathApp.Path(commands)
             obj.Path = path
 
 

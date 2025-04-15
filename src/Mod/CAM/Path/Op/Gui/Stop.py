@@ -25,6 +25,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import PathApp
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -61,7 +62,7 @@ class Stop:
 
         output = ""
         output = word + "\n"
-        path = Path.Path(output)
+        path = PathApp.Path(output)
         obj.Path = path
 
 

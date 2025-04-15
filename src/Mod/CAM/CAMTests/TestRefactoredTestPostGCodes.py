@@ -350,16 +350,16 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
 
     def test10200(self):
         """Test G20 command Generation."""
-        # for some reason, Path.Path("G20") doesn't do the same thing
-        # as Path.Path([Path.Command("G20")])
+        # for some reason, PathApp.Path("G20") doesn't do the same thing
+        # as PathApp.Path([Path.Command("G20")])
         self.single_compare([PathApp.Command("G20")], "G20", "")
 
     #############################################################################
 
     def test10210(self):
         """Test G21 command Generation."""
-        # for some reason, Path.Path("G21") doesn't do the same thing
-        # as Path.Path([Path.Command("G21")])
+        # for some reason, PathApp.Path("G21") doesn't do the same thing
+        # as PathApp.Path([Path.Command("G21")])
         self.single_compare([PathApp.Command("G21")], "G21", "")
 
     #############################################################################
@@ -570,7 +570,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
     #         #
     #         c = Path.Command("G53 G0 X10 Y20 Z30 A40 B50 C60 U70 V80 W90")
 
-    #         self.docobj.Path = Path.Path([c])
+    #         self.docobj.Path = PathApp.Path([c])
     #         postables = [self.docobj]
 
     #         expected = """G90

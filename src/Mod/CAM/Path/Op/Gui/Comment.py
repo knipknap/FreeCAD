@@ -25,6 +25,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import PathApp
 from PySide import QtCore
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -56,7 +57,7 @@ class Comment:
     def execute(self, obj):
         output = ""
         output += "(" + str(obj.Comment) + ")\n"
-        path = Path.Path(output)
+        path = PathApp.Path(output)
         obj.Path = path
 
 

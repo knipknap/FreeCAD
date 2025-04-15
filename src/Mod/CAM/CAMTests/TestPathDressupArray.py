@@ -23,6 +23,7 @@
 
 import FreeCAD
 import Path
+import PathApp
 from Path.Dressup.Array import DressupArray
 import Path.Main.Job as PathJob
 import Path.Op.Profile as PathProfile
@@ -32,7 +33,7 @@ from CAMTests.PathTestUtils import PathTestBase
 
 class TestEngrave:
     def __init__(self, path):
-        self.Path = Path.Path(path)
+        self.Path = PathApp.Path(path)
         self.ToolController = None  # default tool 5mm
         self.CoolantMode = "None"
         self.Name = "Engrave"
@@ -45,7 +46,7 @@ class TestEngrave:
 
 class TestFeature:
     def __init__(self):
-        self.Path = Path.Path()
+        self.Path = PathApp.Path()
         self.Name = ""
 
     def addProperty(self, typ, name, category, tip):

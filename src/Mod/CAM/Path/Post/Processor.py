@@ -41,6 +41,7 @@ import Path.Post.UtilsExport as PostUtilsExport
 
 import FreeCAD
 import Path
+import PathApp
 
 translate = FreeCAD.Qt.translate
 
@@ -161,7 +162,7 @@ class PostProcessor:
 
             fobj = _TempObject()
             c1 = Path.Command(fixture)
-            fobj.Path = Path.Path([c1])
+            fobj.Path = PathApp.Path([c1])
             # Avoid any tool move after G49 in preamble and before tool change
             # and G43 in case tool height compensation is in use, to avoid
             # dangerous move without tool compensation.

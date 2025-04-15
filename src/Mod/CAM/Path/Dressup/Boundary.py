@@ -23,6 +23,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import PathApp
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
 import Path.Main.Stock as PathStock
@@ -276,7 +277,7 @@ class PathBoundary:
             lastExit = None
 
         Path.Log.track(commands)
-        return Path.Path(commands)
+        return PathApp.Path(commands)
 
 
 # Eclass

@@ -27,6 +27,7 @@ from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
 import Path
+import PathApp
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import PathScripts.PathUtils as PathUtils
 
@@ -196,7 +197,7 @@ class GCodeEditorDialog(QtGui.QDialog):
             prevZ = 0.0
 
         # Build a new path with selection
-        p = Path.Path()
+        p = PathApp.Path()
         firstrapid = Path.Command("G0", {"X": prevX, "Y": prevY, "Z": prevZ})
 
         selectionpath = [firstrapid] + commands[startrow : endrow + 1]
@@ -241,7 +242,7 @@ def show(obj):
             # exec_() returns 0 or 1 depending on the button pressed (Ok or
             # Cancel)
             if result:
-                p = Path.Path(dia.editor.toPlainText())
+                p = PathApp.Path(dia.editor.toPlainText())
                 FreeCAD.ActiveDocument.openTransaction("Edit Path")
                 obj.Path = p
                 FreeCAD.ActiveDocument.commitTransaction()

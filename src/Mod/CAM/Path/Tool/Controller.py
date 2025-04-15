@@ -25,6 +25,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import PathApp
 import Path.Tool.Bit as PathToolBit
 import Path.Base.Generator.toolchange as toolchange
 
@@ -273,7 +274,7 @@ class ToolController:
 
         commands = toolchange.generate(**args)
 
-        path = Path.Path(commands)
+        path = PathApp.Path(commands)
         obj.Path = path
         if obj.ViewObject:
             obj.ViewObject.Visibility = True

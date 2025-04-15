@@ -23,6 +23,7 @@
 # ***************************************************************************
 
 import Path
+import PathApp
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 import FreeCAD
@@ -616,7 +617,7 @@ def Execute(op, obj):
     Path.Log.info("*** Adaptive toolpath processing started...\n")
 
     # hide old toolpaths during recalculation
-    obj.Path = Path.Path("(Calculating...)")
+    obj.Path = PathApp.Path("(Calculating...)")
 
     if FreeCAD.GuiUp:
         # store old visibility state

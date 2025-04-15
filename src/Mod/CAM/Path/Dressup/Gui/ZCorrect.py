@@ -26,6 +26,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import PathApp
 import PathScripts.PathUtils as PathUtils
 
 from PySide import QtGui
@@ -208,7 +209,7 @@ class ObjectDressup:
                                 # Non Feed Command
                                 newcommandlist.append(c)
                                 currLocation.update(c.Parameters)
-                        path = Path.Path(newcommandlist)
+                        path = PathApp.Path(newcommandlist)
                         obj.Path = path
 
 

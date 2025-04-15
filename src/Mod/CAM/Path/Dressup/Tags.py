@@ -25,6 +25,7 @@ from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import PathApp
 import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
 import copy
@@ -1120,7 +1121,7 @@ class ObjectTagDressup:
                 edge = None
                 t = 0
 
-        return Path.Path(commands)
+        return PathApp.Path(commands)
 
     def problems(self):
         return list([m for m in self.mappers if m.haveProblem])

@@ -50,8 +50,8 @@ Many other OpenSBP commands not handled
 
 import FreeCAD
 import Path
+import PathApp
 import os
-import Path
 from builtins import open as pyopen
 
 AXIS = (
@@ -82,7 +82,7 @@ def insert(filename, docname):
     doc = FreeCAD.getDocument(docname)
     for subpath in gcode:
         obj = doc.addObject("Path::Feature", "Path")
-        path = Path.Path(subpath)
+        path = PathApp.Path(subpath)
         obj.Path = path
 
 

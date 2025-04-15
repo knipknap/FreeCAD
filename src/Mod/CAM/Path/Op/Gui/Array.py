@@ -23,6 +23,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import PathApp
 import PathScripts
 import PathScripts.PathUtils as PathUtils
 from Path.Dressup.Utils import toolController
@@ -235,7 +236,7 @@ class ObjectArray:
         # Do not generate paths and clear current Path data if operation not
         if not obj.Active:
             if obj.Path:
-                obj.Path = Path.Path()
+                obj.Path = PathApp.Path()
             return
 
         # use seed if specified, otherwise default to object name for consistency during recomputes
@@ -355,7 +356,7 @@ class PathArray:
                 for b in base:
                     pl = FreeCAD.Placement()
                     pl.move(pos)
-                    np = Path.Path(
+                    np = PathApp.Path(
                         [cm.transform(pl) for cm in PathUtils.getPathWithPlacement(b).Commands]
                     )
                     output += np.toGCode()
@@ -383,7 +384,7 @@ class PathArray:
                             # do not process the index 0,0. It will be processed by the base Paths themselves
                             if not (i == 0 and j == 0):
                                 pl.move(pos)
-                                np = Path.Path(
+                                np = PathApp.Path(
                                     [
                                         cm.transform(pl)
                                         for cm in PathUtils.getPathWithPlacement(b).Commands
@@ -412,7 +413,7 @@ class PathArray:
                             # do not process the index 0,0. It will be processed by the base Paths themselves
                             if not (i == 0 and j == 0):
                                 pl.move(pos)
-                                np = Path.Path(
+                                np = PathApp.Path(
                                     [
                                         cm.transform(pl)
                                         for cm in PathUtils.getPathWithPlacement(b).Commands
@@ -433,7 +434,7 @@ class PathArray:
                     output += np.toGCode()
 
         # return output
-        return Path.Path(output)
+        return PathApp.Path(output)
 
 
 class ViewProviderArray:

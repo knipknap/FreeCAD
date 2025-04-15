@@ -34,6 +34,7 @@ from GCode.
 
 import FreeCAD
 import Path
+import PathApp
 import os
 from builtins import open as pyopen
 
@@ -62,7 +63,7 @@ def insert(filename, docname):
     gcode = parse(gcode)
     doc = FreeCAD.getDocument(docname)
     obj = doc.addObject("Path::Feature", "Path")
-    path = Path.Path(gcode)
+    path = PathApp.Path(gcode)
     obj.Path = path
 
 

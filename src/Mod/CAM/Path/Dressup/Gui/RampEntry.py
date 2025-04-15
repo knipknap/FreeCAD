@@ -24,6 +24,7 @@ from PathScripts import PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import PathApp
 import Path.Dressup.Utils as PathDressup
 import math
 
@@ -204,7 +205,7 @@ class ObjectDressup:
             return
 
         if not PathDressup.baseOp(obj.Base).Active:
-            path = Path.Path("(inactive operation)")
+            path = PathApp.Path("(inactive operation)")
             obj.Path = path
             return
 
@@ -816,7 +817,7 @@ class ObjectDressup:
 
             outCommands.append(Path.Command(cmd.Name, params))
 
-        return Path.Path(outCommands)
+        return PathApp.Path(outCommands)
 
 
 class ViewProviderDressup:

@@ -24,11 +24,12 @@
 
 import os
 import FreeCAD
-import CAMTests
+
+
+FreeCAD.__unit_test__ += ["TestCAMApp"]
 
 # This code handles parameter groups following the CAM workbench renaming
 # (PATH -> CAM). This code can be removed after the 1.0 release.
-
 ParGrpSys = FreeCAD.ParamGet("System parameter:Modules").GetGroup("Path")
 if ParGrpSys.HasGroup("CAM"):
     pass
@@ -50,25 +51,3 @@ ParGrp.SetString("HelpIndex", "Path/Help/index.html")
 ParGrp.SetString("WorkBenchName", "CAM")
 ParGrp.SetString("WorkBenchModule", "PathWorkbench.py")
 
-
-# Find test files in the CAMTests directory
-test_dir = os.path.dirname(CAMTests.__file__)
-test_modules_to_add = []
-for filename in os.listdir(test_dir):
-    if filename.startswith("Test") and filename.endswith(".py"):
-        module_name = filename[:-3]
-        # Construct full module path (e.g., CAM.CAMTests.TestPathToolController)
-        full_module_name = f"CAM.CAMTests.{module_name}"
-        test_modules_to_add.append(full_module_name)
-
-# Add the discovered test modules
-FreeCAD.__unit_test__.extend(test_modules_to_add)
-
-# Also include the original TestCAMApp if it exists and contains tests
-# Assuming TestCAMApp is directly under Mod/CAM/
-app_test_path = os.path.join(os.path.dirname(__file__), "TestCAMApp.py")
-if os.path.exists(app_test_path):
-    FreeCAD.__unit_test__.append("CAM.TestCAMApp")
-
-# Ensure uniqueness in the list and sort for consistency
-FreeCAD.__unit_test__ = sorted(list(set(FreeCAD.__unit_test__)))
