@@ -135,6 +135,12 @@ SET(PathPythonToolsToolBit_SRCS
     Path/Tool/toolbit/util.py
 )
 
+SET(PathPythonToolsToolBitMixins_SRCS
+    Path/Tool/toolbit/mixins/__init__.py
+    Path/Tool/toolbit/mixins/rotary.py
+    Path/Tool/toolbit/mixins/chipload.py
+)
+
 SET(PathPythonToolsToolBitModels_SRCS
     Path/Tool/toolbit/models/__init__.py
     Path/Tool/toolbit/models/ballend.py
@@ -498,6 +504,7 @@ SET(all_files
     ${PathPythonToolsShapeModels_SRCS}
     ${PathPythonToolsShapeUi_SRCS}
     ${PathPythonToolsToolBit_SRCS}
+    ${PathPythonToolsToolBitMixins_SRCS}
     ${PathPythonToolsToolBitModels_SRCS}
     ${PathPythonToolsLibrary_SRCS}
     ${PathPythonToolsLibraryModels_SRCS}
@@ -662,6 +669,13 @@ INSTALL(
 INSTALL(
     FILES
         ${PathPythonToolsToolBit_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/toolbit
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsToolBitMixins_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/toolbit
 )
