@@ -161,6 +161,15 @@ SET(PathPythonToolsLibraryModels_SRCS
     Path/Tool/library/models/library.py
 )
 
+SET(PathPythonToolsMachine_SRCS
+    Path/Tool/machine/__init__.py
+)
+
+SET(PathPythonToolsMachineModels_SRCS
+    Path/Tool/machine/models/__init__.py
+    Path/Tool/machine/models/machine.py
+)
+
 SET(PathPythonToolsShape_SRCS
     Path/Tool/shape/__init__.py
     Path/Tool/shape/registry.py
@@ -416,6 +425,7 @@ SET(Tests_SRCS
     CAMTests/TestPathToolShapeDoc.py
     CAMTests/TestPathToolShapeRegistry.py
     CAMTests/TestPathToolLibrary.py
+    CAMTests/TestPathToolMachine.py
     CAMTests/TestPathToolController.py
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py
@@ -491,6 +501,8 @@ SET(all_files
     ${PathPythonToolsToolBitModels_SRCS}
     ${PathPythonToolsLibrary_SRCS}
     ${PathPythonToolsLibraryModels_SRCS}
+    ${PathPythonToolsMachine_SRCS}
+    ${PathPythonToolsMachineModels_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -673,6 +685,20 @@ INSTALL(
         ${PathPythonToolsLibraryModels_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/library/models
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsMachine_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/machine
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsMachineModels_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/machine/models
 )
 
 INSTALL(
