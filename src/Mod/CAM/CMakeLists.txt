@@ -120,7 +120,7 @@ SET(PathPythonTools_SRCS
 
 SET(PathPythonToolsAssets_SRCS
     Path/Tool/assets/__init__.py
-    Path/Tool/assets/adapter.py
+    Path/Tool/assets/asset.py
     Path/Tool/assets/manager.py
     Path/Tool/assets/uri.py
 )
@@ -129,7 +129,6 @@ SET(PathPythonToolsAssetsStore_SRCS
     Path/Tool/assets/store/__init__.py
     Path/Tool/assets/store/base.py
     Path/Tool/assets/store/flat.py
-    Path/Tool/assets/store/unversioned.py
     Path/Tool/assets/store/versioned.py
 )
 
@@ -450,9 +449,9 @@ SET(Tests_SRCS
     CAMTests/TestPathToolChangeGenerator.py
     CAMTests/TestPathThreadMilling.py
     CAMTests/TestPathThreadMillingGenerator.py
+    CAMTests/TestPathToolAsset.py
     CAMTests/TestPathToolAssetUri.py
     CAMTests/TestPathToolAssetStore.py
-    CAMTests/TestPathToolAssetAdapter.py
     CAMTests/TestPathToolAssetManager.py
     CAMTests/TestPathToolBit.py
     CAMTests/TestPathToolBitSerializer.py
